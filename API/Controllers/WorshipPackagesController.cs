@@ -43,5 +43,10 @@ namespace API.Controllers
             // Logic để tạo gói cúng mới trong database...
             return Ok($"Admin '{adminEmail}' đã tạo thành công gói cúng: '{packageName}'.");
         }
+        [HttpGet("health")]
+        public IActionResult HealthCheck()
+        {
+            return Ok(new { status = "Healthy" });
+        }
     }
 }

@@ -23,6 +23,21 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalVite", policy =>
+    {
+        policy.WithOrigins("http://localhost:8080",
+                "https://localhost:8080",  // Add HTTPS support
+                "http://localhost:8081",
+                "https://localhost:8081",  // Add HTTPS support
+                "http://localhost:3000",
+                "https://localhost:3000")  // Add HTTPS support)
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -96,6 +111,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowLocalVite");
 
 app.UseAuthentication();
 app.UseAuthorization();
