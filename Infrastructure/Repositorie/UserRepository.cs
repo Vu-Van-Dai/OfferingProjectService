@@ -19,6 +19,16 @@ namespace Infrastructure.Repositorie
             _context = context;
         }
 
+        public async Task<AppUser?> GetByIdAsync(Guid id)
+        {
+            return await _context.AppUsers.FindAsync(id);
+        }
+
+        public void Remove(AppUser user)
+        {
+            _context.AppUsers.Remove(user);
+        }
+
         public async Task<AppUser?> GetByEmailAsync(string email)
         {
             // Dùng DbContext để tìm người dùng trong database

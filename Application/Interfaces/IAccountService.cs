@@ -11,5 +11,7 @@ namespace Application.Interfaces
     {
         Task<AppUser?> RegisterAsync(string fullName, string email, string password);
         Task<AppUser?> ValidateCredentialsAsync(string email, string password);
+        Task<bool> ChangePasswordAsync(Guid userId, string oldPassword, string newPassword);
+        Task<bool> DeleteAccountAsync(Guid userId, string password);
     }
 }

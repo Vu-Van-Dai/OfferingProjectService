@@ -48,5 +48,38 @@ namespace Application.Services
             bool isPasswordValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
             return isPasswordValid ? user : null;
         }
+
+        public async Task<bool> ChangePasswordAsync(Guid userId, string oldPassword, string newPassword)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null) return false;
+
+            // Xác thực mật khẩu cũ
+            if (!BCrypt.Net.BCrypt.Verify(oldPassword, user.PasswordHash))
+            {
+                return false;
+            }
+
+            // Băm và cập nhật mật khẩu mới
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            await _userRepository.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteAccountAsync(Guid userId, string password)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null) return false;
+
+            // Yêu cầu xác thực mật khẩu trước khi xóa
+            if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            {
+                return false;
+            }
+
+            _userRepository.Remove(user);
+            await _userRepository.SaveChangesAsync();
+            return true;
+        }
     }
 }
