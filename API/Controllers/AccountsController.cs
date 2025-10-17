@@ -1,6 +1,8 @@
 ﻿using API.Services;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -51,6 +53,31 @@ namespace API.Controllers
             // Trả về token cho client
             return Ok(new { token = token });
         }
+        // POST: api/accounts/change-password
+        [HttpPost("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto passwordDto)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var result = await _accountService.ChangePasswordAsync(userId, passwordDto.OldPassword, passwordDto.NewPassword);
+
+            if (!result) return BadRequest(new { message = "Mật khẩu cũ không đúng hoặc đã có lỗi xảy ra." });
+
+            return Ok(new { message = "Đổi mật khẩu thành công." });
+        }
+
+        // DELETE: api/accounts/delete-me
+        [HttpDelete("delete-me")]
+        [Authorize]
+        public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountDto deleteDto)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var result = await _accountService.DeleteAccountAsync(userId, deleteDto.Password);
+
+            if (!result) return BadRequest(new { message = "Mật khẩu không đúng hoặc đã có lỗi xảy ra." });
+
+            return Ok(new { message = "Tài khoản đã được xóa." });
+        }
     }
 
     // --- DTOs (Data Transfer Objects) ---
@@ -65,6 +92,17 @@ namespace API.Controllers
     public class LoginDto
     {
         public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class ChangePasswordDto
+    {
+        public string OldPassword { get; set; }
+        public string NewPassword { get; set; }
+    }
+
+    public class DeleteAccountDto
+    {
         public string Password { get; set; }
     }
 }
