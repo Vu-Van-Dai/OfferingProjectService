@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251022010707_AddReviewsAndSpecs")]
+    partial class AddReviewsAndSpecs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,9 +60,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ShopId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers");
@@ -99,20 +99,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("ProductCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ShopId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Specifications")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StockQuantity")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProductCategoryId");
-
-                    b.HasIndex("ShopId");
 
                     b.ToTable("Products");
                 });
@@ -186,39 +175,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("ProductReviews");
                 });
 
-            modelBuilder.Entity("Core.Entities.Shop", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("JoinDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<Guid>("OwnerUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerUserId")
-                        .IsUnique();
-
-                    b.ToTable("Shops");
-                });
-
             modelBuilder.Entity("Core.Entities.Product", b =>
                 {
                     b.HasOne("Core.Entities.ProductCategory", "ProductCategory")
@@ -227,21 +183,13 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.Shop", "Shop")
-                        .WithMany("Products")
-                        .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ProductCategory");
-
-                    b.Navigation("Shop");
                 });
 
             modelBuilder.Entity("Core.Entities.ProductReview", b =>
                 {
                     b.HasOne("Core.Entities.Product", "Product")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -252,33 +200,14 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Core.Entities.AppUser", "User")
                         .WithMany("Reviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Product");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Core.Entities.Shop", b =>
-                {
-                    b.HasOne("Core.Entities.AppUser", "OwnerUser")
-                        .WithOne("Shop")
-                        .HasForeignKey("Core.Entities.Shop", "OwnerUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OwnerUser");
-                });
-
             modelBuilder.Entity("Core.Entities.AppUser", b =>
-                {
-                    b.Navigation("Reviews");
-
-                    b.Navigation("Shop");
-                });
-
-            modelBuilder.Entity("Core.Entities.Product", b =>
                 {
                     b.Navigation("Reviews");
                 });
@@ -291,11 +220,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.ProductReview", b =>
                 {
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("Core.Entities.Shop", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

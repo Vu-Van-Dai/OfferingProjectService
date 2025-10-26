@@ -33,5 +33,9 @@ namespace Core.Entities
 
         // Tự quản lý quyền bằng một danh sách các chuỗi
         public ICollection<string> Roles { get; set; } = new List<string>();
+        // Mối quan hệ: Một người dùng có thể viết nhiều đánh giá
+        public int? ShopId { get; set; }
+        public Shop? Shop { get; set; }
+        public ICollection<ProductReview> Reviews { get; set; } = new List<ProductReview>();
     }
 }

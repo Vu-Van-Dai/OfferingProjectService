@@ -1,6 +1,7 @@
 ﻿using API.Services;
 using Application.Interfaces;
 using Application.Services;
+using Core.Entities;
 using Infrastructure.Data;
 using Infrastructure.Repositorie;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +20,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IShopRepository, ShopRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IShopService, ShopService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 // Add services to the container.
 builder.Services.AddScoped<TokenService>();
@@ -68,6 +77,37 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        await context.Database.MigrateAsync();
+
+        var adminEmail = "admin@worship.com";
+        if (!await context.AppUsers.AnyAsync(u => u.Email == adminEmail))
+        {
+            var adminUser = new AppUser
+            {
+                Id = Guid.NewGuid(),
+                FullName = "Administrator",
+                Email = adminEmail,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123!"),
+                Roles = new List<string> { "Admin" }
+            };
+            await context.AppUsers.AddAsync(adminUser);
+            await context.SaveChangesAsync();
+            logger.LogInformation("Đã tạo tài khoản Admin mặc định.");
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Đã xảy ra lỗi khi khởi tạo dữ liệu.");
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {

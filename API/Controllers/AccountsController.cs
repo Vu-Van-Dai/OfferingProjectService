@@ -54,7 +54,7 @@ namespace API.Controllers
             return Ok(new { token = token });
         }
         // POST: api/accounts/change-password
-        [HttpPost("change-password")]
+        [HttpPost("changepassword")]
         [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto passwordDto)
         {
@@ -67,7 +67,7 @@ namespace API.Controllers
         }
 
         // DELETE: api/accounts/delete-me
-        [HttpDelete("delete-me")]
+        [HttpDelete("deleteme")]
         [Authorize]
         public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountDto deleteDto)
         {
