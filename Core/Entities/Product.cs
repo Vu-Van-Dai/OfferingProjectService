@@ -32,6 +32,8 @@ namespace Core.Entities
         public int StockQuantity { get; set; } // Số lượng trong kho
         public string? Specifications { get; set; } // "Thông số kỹ thuật" (Lưu dạng JSON hoặc chuỗi)
         // Mối quan hệ: Một sản phẩm thuộc về một danh mục
+        [MaxLength(250)]
+        public string SearchableName { get; set; }
         public int ProductCategoryId { get; set; }
         public ProductCategory ProductCategory { get; set; }
         public ICollection<ProductReview> Reviews { get; set; } = new List<ProductReview>();

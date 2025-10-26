@@ -1,5 +1,6 @@
 ﻿using Application.Dtos;
 using Application.Interfaces;
+using Application.Utils;
 using Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace Application.Services
             {
                 Name = shopDto.ShopName,
                 Description = shopDto.Description,
+                SearchableName = StringUtils.RemoveAccents(shopDto.ShopName),
                 OwnerUserId = ownerUserId
             };
 

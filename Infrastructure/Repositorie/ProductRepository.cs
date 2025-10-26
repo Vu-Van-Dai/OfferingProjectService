@@ -51,6 +51,15 @@ namespace Infrastructure.Repositorie
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> SearchByNameAsync(string normalizedQuery)
+        {
+            // Bây giờ chúng ta tìm trên cột SearchableName
+            return await _context.Products
+                .Where(p => p.SearchableName.Contains(normalizedQuery))
+                .Include(p => p.Shop)
+                .ToListAsync();
+        }
+
         public async Task AddAsync(Product product)
         {
             await _context.Products.AddAsync(product);

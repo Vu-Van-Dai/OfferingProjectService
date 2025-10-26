@@ -11,5 +11,6 @@ namespace Application.Interfaces
     {
         Task AddAsync(Shop shop);
         Task<int> SaveChangesAsync();
+        Task<IEnumerable<Shop>> SearchByNameAsync(string query);
     }
 }

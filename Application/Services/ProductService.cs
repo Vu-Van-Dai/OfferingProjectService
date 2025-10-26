@@ -1,5 +1,6 @@
 ﻿using Application.Dtos;
 using Application.Interfaces;
+using Application.Utils;
 using Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace Application.Services
             var newProduct = new Product
             {
                 Name = productDto.Name,
+                SearchableName = StringUtils.RemoveAccents(productDto.Name),
                 Description = productDto.Description,
                 Features = productDto.Features,
                 ImageUrl = productDto.ImageUrl,
@@ -62,6 +64,7 @@ namespace Application.Services
 
             // Cập nhật thuộc tính
             existingProduct.Name = productDto.Name;
+            existingProduct.SearchableName = StringUtils.RemoveAccents(productDto.Name);
             existingProduct.Description = productDto.Description;
             existingProduct.Features = productDto.Features;
             existingProduct.ImageUrl = productDto.ImageUrl;

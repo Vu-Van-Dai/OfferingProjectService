@@ -28,6 +28,7 @@ builder.Services.AddScoped<IShopRepository, ShopRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IShopService, ShopService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
 
 // Add services to the container.
 builder.Services.AddScoped<TokenService>();

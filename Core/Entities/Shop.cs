@@ -20,6 +20,8 @@ namespace Core.Entities
 
         // Mối quan hệ 1-1: Một Shop được sở hữu bởi một AppUser
         public Guid OwnerUserId { get; set; }
+        [MaxLength(200)]
+        public string SearchableName { get; set; }
         public AppUser OwnerUser { get; set; }
 
         // Mối quan hệ 1-n: Một Shop có nhiều sản phẩm
