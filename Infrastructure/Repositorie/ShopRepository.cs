@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Core.Entities;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,14 @@ namespace Infrastructure.Repositorie
         public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();
+        }
+        public async Task<IEnumerable<Shop>> SearchByNameAsync(string normalizedQuery)
+        {
+            // Tìm trên cột SearchableName
+            return await _context.Shops
+                .Where(s => s.SearchableName.Contains(normalizedQuery))
+                .Include(s => s.Products.Where(p => p.IsPopular).Take(3))
+                .ToListAsync();
         }
     }
 }

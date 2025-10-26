@@ -17,5 +17,6 @@ namespace Application.Interfaces
         void Delete(Product product); // Dùng cho Admin
         Task<int> SaveChangesAsync(); // Thêm hàm này
         Task<IEnumerable<Product>> GetByShopIdAsync(int shopId);
+        Task<IEnumerable<Product>> SearchByNameAsync(string query);
     }
 }
