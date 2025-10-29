@@ -22,9 +22,6 @@ namespace Core.Entities
 
         public string? PhoneNumber { get; set; }
 
-        [MaxLength(250)]
-        public string? Address { get; set; }
-
         [MaxLength(500)]
         public string? Introduction { get; set; }
 
@@ -36,6 +33,9 @@ namespace Core.Entities
         // Mối quan hệ: Một người dùng có thể viết nhiều đánh giá
         public int? ShopId { get; set; }
         public Shop? Shop { get; set; }
+        public Cart? Cart { get; set; }
         public ICollection<ProductReview> Reviews { get; set; } = new List<ProductReview>();
+        public ICollection<UserAddress> Addresses { get; set; } = new List<UserAddress>();
+
     }
 }

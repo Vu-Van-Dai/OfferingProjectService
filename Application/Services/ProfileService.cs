@@ -22,7 +22,7 @@ namespace Application.Services
             return await _userRepository.GetByIdAsync(userId);
         }
 
-        public async Task<bool> UpdateProfileAsync(Guid userId, string fullName, string? phoneNumber, string? address, string? introduction)
+        public async Task<bool> UpdateProfileAsync(Guid userId, string fullName, string? phoneNumber,string? introduction)
         {
             var user = await _userRepository.GetByIdAsync(userId);
             if (user == null)
@@ -32,7 +32,6 @@ namespace Application.Services
 
             user.FullName = fullName;
             user.PhoneNumber = phoneNumber;
-            user.Address = address;
             user.Introduction = introduction;
 
             await _userRepository.SaveChangesAsync();

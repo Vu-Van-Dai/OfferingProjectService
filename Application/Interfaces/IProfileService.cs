@@ -10,6 +10,6 @@ namespace Application.Interfaces
     public interface IProfileService
     {
         Task<AppUser?> GetProfileAsync(Guid userId);
-        Task<bool> UpdateProfileAsync(Guid userId, string fullName, string? phoneNumber, string? address, string? introduction);
+        Task<bool> UpdateProfileAsync(Guid userId, string fullName, string? phoneNumber, string? introduction);
     }
 }
