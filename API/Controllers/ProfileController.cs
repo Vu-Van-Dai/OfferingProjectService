@@ -32,7 +32,6 @@ namespace API.Controllers
                 user.FullName,
                 user.Email,
                 user.PhoneNumber,
-                user.Address,
                 user.Introduction
             });
         }
@@ -42,7 +41,7 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateMyProfile([FromBody] UpdateProfileDto profileDto)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var result = await _profileService.UpdateProfileAsync(userId, profileDto.FullName, profileDto.PhoneNumber, profileDto.Address, profileDto.Introduction);
+            var result = await _profileService.UpdateProfileAsync(userId, profileDto.FullName, profileDto.PhoneNumber, profileDto.Introduction);
 
             if (!result) return NotFound();
 
@@ -55,7 +54,6 @@ namespace API.Controllers
     {
         public string FullName { get; set; }
         public string? PhoneNumber { get; set; }
-        public string? Address { get; set; }
         public string? Introduction { get; set; }
     }
 }
