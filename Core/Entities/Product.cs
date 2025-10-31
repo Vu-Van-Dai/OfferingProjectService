@@ -20,7 +20,7 @@ namespace Core.Entities
 
         public string? Description { get; set; } // Mô tả ngắn (Cam sành ngọt thanh...)
         public string? Features { get; set; } // Các gạch đầu dòng (Giàu vitamin C, ...)
-        public string? ImageUrl { get; set; } // Ảnh chính của sản phẩm
+        public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
         public bool IsPopular { get; set; } // Để hiển thị tag "Phổ biến"
 
         [Column(TypeName = "decimal(18,2)")]

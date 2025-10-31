@@ -24,6 +24,7 @@ namespace Infrastructure.Repositorie
             return await _context.Products
                 .Include(p => p.ProductCategory)
                 .Include(p => p.Shop)
+                .Include(p => p.Images)
                 .ToListAsync();
         }
 
@@ -33,6 +34,7 @@ namespace Infrastructure.Repositorie
                 .Where(p => p.ProductCategoryId == categoryId)
                 .Include(p => p.ProductCategory)
                 .Include(p => p.Shop)
+                .Include(p => p.Images)
                 .ToListAsync();
         }
         public async Task<Product?> GetByIdAsync(int id)
@@ -42,6 +44,7 @@ namespace Infrastructure.Repositorie
                 .Include(p => p.ProductCategory)
                 .Include(p => p.Shop)
                 .Include(p => p.Reviews)
+                .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -50,6 +53,7 @@ namespace Infrastructure.Repositorie
             return await _context.Products
                 .Where(p => p.ShopId == shopId)
                 .Include(p => p.ProductCategory)
+                .Include(p => p.Images)
                 .ToListAsync();
         }
 
@@ -59,6 +63,7 @@ namespace Infrastructure.Repositorie
             return await _context.Products
                 .Where(p => p.SearchableName.Contains(normalizedQuery))
                 .Include(p => p.Shop)
+                .Include(p => p.Images)
                 .ToListAsync();
         }
 

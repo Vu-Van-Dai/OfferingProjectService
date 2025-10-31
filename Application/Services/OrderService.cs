@@ -135,7 +135,7 @@ namespace Application.Services
                 {
                     ProductId = oi.ProductId,
                     ProductName = oi.ProductOrdered.Name,
-                    ImageUrl = oi.ProductOrdered.ImageUrl,
+                    ImageUrl = oi.ProductOrdered.Images?.FirstOrDefault()?.ImageUrl,
                     Price = oi.Price,
                     Quantity = oi.Quantity,
                     ShopName = oi.Shop.Name
