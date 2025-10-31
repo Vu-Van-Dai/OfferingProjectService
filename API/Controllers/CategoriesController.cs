@@ -22,7 +22,8 @@ namespace API.Controllers
         // API cho trang "Danh Mục Sản Phẩm" (Hình 4)
         // GET: /api/categories
         [HttpGet]
-        public async Task<IActionResult> GetAllCategories()
+        [HttpGet] // Trả về List<CategorySummaryDto>
+        public async Task<ActionResult<IEnumerable<CategorySummaryDto>>> GetAllCategories()
         {
             var categories = await _categoryService.GetAllAsync();
             return Ok(categories);
@@ -30,8 +31,8 @@ namespace API.Controllers
 
         // API cho các trang danh mục con (Hình 2, 3, 5)
         // GET: /api/categories/1/products (lấy sản phẩm của "Hoa Tươi")
-        [HttpGet("{categoryId}/products")]
-        public async Task<IActionResult> GetProductsByCategory(int categoryId)
+        [HttpGet("{categoryId}/products")] // Trả về List<ProductResponseDto>
+        public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetProductsByCategory(int categoryId)
         {
             var products = await _productService.GetByCategoryIdAsync(categoryId);
             return Ok(products);

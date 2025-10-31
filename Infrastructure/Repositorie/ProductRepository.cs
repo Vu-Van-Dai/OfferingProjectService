@@ -23,6 +23,7 @@ namespace Infrastructure.Repositorie
         {
             return await _context.Products
                 .Include(p => p.ProductCategory)
+                .Include(p => p.Shop)
                 .ToListAsync();
         }
 
@@ -31,6 +32,7 @@ namespace Infrastructure.Repositorie
             return await _context.Products
                 .Where(p => p.ProductCategoryId == categoryId)
                 .Include(p => p.ProductCategory)
+                .Include(p => p.Shop)
                 .ToListAsync();
         }
         public async Task<Product?> GetByIdAsync(int id)
@@ -78,6 +80,20 @@ namespace Infrastructure.Repositorie
         public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();
+        }
+        public async Task<int> CountByShopIdAsync(int shopId)
+        {
+            return await _context.Products.CountAsync(p => p.ShopId == shopId);
+        }
+
+        public async Task<int> CountInStockByShopIdAsync(int shopId)
+        {
+            return await _context.Products.CountAsync(p => p.ShopId == shopId && p.StockQuantity > 0);
+        }
+
+        public async Task<int> CountOutOfStockByShopIdAsync(int shopId)
+        {
+            return await _context.Products.CountAsync(p => p.ShopId == shopId && p.StockQuantity <= 0);
         }
     }
 }

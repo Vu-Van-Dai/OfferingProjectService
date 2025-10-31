@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. Dịch vụ của Infrastructure Layer (Truy cập dữ liệu)
@@ -35,7 +36,14 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUserAddressRepository, UserAddressRepository>();
 builder.Services.AddScoped<IUserAddressService, UserAddressService>();
-
+builder.Services.AddScoped<IOrderQueryRepository, OrderQueryRepository>();
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IShopProfileService, ShopProfileService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IOrderItemService, OrderItemService>();
+builder.Services.AddScoped<IReviewQueryService, ReviewQueryService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
 // Add services to the container.
 builder.Services.AddScoped<TokenService>();
@@ -110,6 +118,7 @@ using (var scope = app.Services.CreateScope())
             await context.SaveChangesAsync();
             logger.LogInformation("Đã tạo tài khoản Admin mặc định.");
         }
+        await Infrastructure.Data.DataSeeder.SeedShopAndProductsAsync(services, logger);
     }
     catch (Exception ex)
     {
@@ -160,6 +169,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseCors("AllowLocalVite");
 

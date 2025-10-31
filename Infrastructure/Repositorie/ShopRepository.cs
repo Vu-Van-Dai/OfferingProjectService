@@ -30,5 +30,22 @@ namespace Infrastructure.Repositorie
                 .Include(s => s.Products.Where(p => p.IsPopular).Take(3))
                 .ToListAsync();
         }
+        public async Task<Shop?> GetByOwnerUserIdAsync(Guid ownerUserId)
+        {
+            // Include Products nếu bạn muốn hiển thị SP trên trang profile shop
+            return await _context.Shops
+                // .Include(s => s.Products)
+                .FirstOrDefaultAsync(s => s.OwnerUserId == ownerUserId);
+        }
+
+        public async Task<Shop?> GetByIdAsync(int id)
+        {
+            return await _context.Shops.FindAsync(id);
+        }
+
+        public void Update(Shop shop)
+        {
+            _context.Shops.Update(shop);
+        }
     }
 }

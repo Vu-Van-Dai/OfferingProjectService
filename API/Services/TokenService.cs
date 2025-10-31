@@ -29,6 +29,11 @@ namespace API.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
+            if (user.Roles.Contains("Shop") && user.ShopId.HasValue)
+            {
+                claims.Add(new Claim("ShopId", user.ShopId.Value.ToString()));
+            }
+
             // 2. Lấy khóa bí mật từ appsettings.json
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             // 3. Tạo thông tin chữ ký

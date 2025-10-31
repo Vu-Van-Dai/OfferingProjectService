@@ -11,73 +11,92 @@ namespace API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
+        // Bỏ IReviewService nếu bạn chỉ gọi API /api/products/{id}/reviews
+        // private readonly IReviewService _reviewService; 
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductService productService /*, IReviewService reviewService*/)
         {
             _productService = productService;
+            // _reviewService = reviewService;
         }
 
-        // API cho yêu cầu "hiện tất cả các sản phẩm" (Hình 1)
+        // === API CÔNG KHAI ===
+
         // GET: /api/products
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetAllProducts()
         {
             var products = await _productService.GetAllAsync();
             return Ok(products);
         }
 
-        // API để xem chi tiết 1 sản phẩm
-        // GET: /api/products/5
+        // GET: /api/products/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProductDetails(int id)
+        public async Task<ActionResult<ProductResponseDto>> GetProductDetails(int id)
         {
-            var product = await _productService.GetByIdAsync(id); // Repo đã Include Shop, Reviews
-            if (product == null) return NotFound();
+            var productDto = await _productService.GetByIdAsync(id);
+            if (productDto == null)
+                return NotFound(new { message = "Không tìm thấy sản phẩm." });
 
-            // Lấy sản phẩm liên quan (cùng danh mục, trừ sản phẩm này)
-            var relatedProducts = (await _productService.GetByCategoryIdAsync(product.ProductCategoryId))
+            // Lấy sản phẩm liên quan (đã là DTO)
+            var relatedProducts = (await _productService.GetByCategoryIdAsync(productDto.ProductCategoryId))
                                     .Where(p => p.Id != id)
                                     .Take(4);
 
             return Ok(new
             {
-                Product = product,
+                Product = productDto,
                 RelatedProducts = relatedProducts
-                // Reviews đã nằm trong product.Reviews
+                // FE sẽ gọi API /api/products/{id}/reviews để lấy reviews
             });
         }
 
-        // === API ADMIN ===
+        // === API QUẢN LÝ CỦA SHOP ===
+
         [HttpPost]
         [Authorize(Roles = "Shop")]
-        public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto productDto)
+        public async Task<IActionResult> CreateProduct([FromForm] CreateProductDto productDto) // SỬA: [FromForm]
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             try
             {
-                var newProduct = await _productService.CreateAsync(productDto, userId);
-                return CreatedAtAction(nameof(GetProductDetails), new { id = newProduct.Id }, newProduct);
+                // 1. Tạo sản phẩm (Hàm này trả về Entity Product)
+                var newProductEntity = await _productService.CreateAsync(productDto, userId);
+
+                // 2. LẤY LẠI SẢN PHẨM DƯỚI DẠNG DTO "AN TOÀN"
+                var productDtoResponse = await _productService.GetByIdAsync(newProductEntity.Id);
+
+                // 3. Trả về DTO
+                return CreatedAtAction(nameof(GetProductDetails), new { id = newProductEntity.Id }, productDtoResponse);
             }
             catch (UnauthorizedAccessException ex)
             {
                 return Forbid(ex.Message);
             }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Shop")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] UpdateProductDto productDto)
+        public async Task<IActionResult> UpdateProduct(int id, [FromForm] UpdateProductDto productDto) // SỬA: [FromForm]
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             try
             {
                 var result = await _productService.UpdateAsync(id, productDto, userId);
-                if (!result) return NotFound();
+                if (!result) return NotFound(new { message = "Không tìm thấy sản phẩm." });
                 return NoContent();
             }
             catch (UnauthorizedAccessException ex)
             {
                 return Forbid(ex.Message); // 403 Forbidden
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -89,12 +108,16 @@ namespace API.Controllers
             try
             {
                 var result = await _productService.DeleteAsync(id, userId);
-                if (!result) return NotFound();
+                if (!result) return NotFound(new { message = "Không tìm thấy sản phẩm." });
                 return NoContent();
             }
             catch (UnauthorizedAccessException ex)
             {
                 return Forbid(ex.Message); // 403 Forbidden
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

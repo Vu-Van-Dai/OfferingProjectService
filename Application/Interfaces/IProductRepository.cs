@@ -18,5 +18,8 @@ namespace Application.Interfaces
         Task<int> SaveChangesAsync(); // Thêm hàm này
         Task<IEnumerable<Product>> GetByShopIdAsync(int shopId);
         Task<IEnumerable<Product>> SearchByNameAsync(string query);
+        Task<int> CountByShopIdAsync(int shopId);
+        Task<int> CountInStockByShopIdAsync(int shopId);
+        Task<int> CountOutOfStockByShopIdAsync(int shopId);
     }
 }

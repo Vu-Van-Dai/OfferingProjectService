@@ -11,19 +11,16 @@ namespace Application.Interfaces
     public interface IProductService
     {
         // Lấy tất cả sản phẩm (cho trang "Tất Cả Sản Phẩm")
-        Task<IEnumerable<Product>> GetAllAsync();
+        Task<IEnumerable<ProductResponseDto>> GetAllAsync();
 
         // Lấy sản phẩm theo ID danh mục (cho trang "Hoa Tươi", "Hương Nến"...)
-        Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId);
+        Task<IEnumerable<ProductResponseDto>> GetByCategoryIdAsync(int categoryId);
 
         // Lấy chi tiết 1 sản phẩm
-        Task<Product?> GetByIdAsync(int id);
+        Task<ProductResponseDto?> GetByIdAsync(int id);
 
         // Tạo sản phẩm mới (cho Admin)
-        Task<Product> CreateAsync(CreateProductDto productDto);
-        Task<bool> UpdateAsync(int id, UpdateProductDto productDto); // Thêm
-        Task<bool> DeleteAsync(int id); // Thêm
-        Task<IEnumerable<Product>> GetByShopIdAsync(int shopId);
+        Task<IEnumerable<ProductResponseDto>> GetByShopIdAsync(int shopId);
         Task<Product> CreateAsync(CreateProductDto productDto, Guid userId); // Thêm userId
         Task<bool> UpdateAsync(int id, UpdateProductDto productDto, Guid userId); // Thêm userId
         Task<bool> DeleteAsync(int id, Guid userId); // Thêm userId

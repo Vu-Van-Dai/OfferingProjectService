@@ -12,5 +12,6 @@ namespace Application.Interfaces
         Task<IEnumerable<ProductReview>> GetByProductIdAsync(int productId);
         Task AddAsync(ProductReview review);
         Task<int> SaveChangesAsync();
+        Task<IEnumerable<ProductReview>> GetByShopIdAsync(int shopId);
     }
 }

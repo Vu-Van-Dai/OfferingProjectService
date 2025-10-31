@@ -8,6 +8,15 @@ using System.Threading.Tasks;
 namespace Core.Entities
 {
     // Chi tiết một món hàng trong đơn hàng
+    public enum OrderItemShopStatus
+    {
+        Pending,        // Chờ Shop xác nhận
+        Preparing,      // Shop đang chuẩn bị
+        ReadyToShip,    // Sẵn sàng giao
+        Shipped,        // Đã giao cho vận chuyển
+        Cancelled       // Shop đã hủy
+    }
+
     public class OrderItem
     {
         public int Id { get; set; }
@@ -27,5 +36,6 @@ namespace Core.Entities
         // Mối quan hệ: Thuộc cửa hàng nào (để xử lý đơn cho shop)
         public int ShopId { get; set; }
         public Shop Shop { get; set; }
+        public OrderItemShopStatus ShopStatus { get; set; } = OrderItemShopStatus.Pending;
     }
 }
