@@ -115,16 +115,21 @@ namespace Infrastructure.Data
                 .HasForeignKey(oi => oi.ShopId)
                 .OnDelete(DeleteBehavior.Restrict); // Không cho xóa Shop nếu còn OrderItem
             modelBuilder.Entity<AppUser>()
-        .HasMany(u => u.Addresses) // Một User có nhiều Address
-        .WithOne(a => a.User) // Một Address thuộc về một User
-        .HasForeignKey(a => a.UserId)
-        .OnDelete(DeleteBehavior.Cascade); // Xóa User thì xóa luôn Address
+                .HasMany(u => u.Addresses) // Một User có nhiều Address
+                .WithOne(a => a.User) // Một Address thuộc về một User
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Xóa User thì xóa luôn Address
 
             // Đảm bảo mỗi User chỉ có tối đa 1 địa chỉ mặc định (IsDefault = true)
             modelBuilder.Entity<UserAddress>()
                 .HasIndex(a => new { a.UserId, a.IsDefault })
                 .HasFilter("[IsDefault] = 1") // Chỉ áp dụng index cho các bản ghi có IsDefault = true
                 .IsUnique(); // Đảm bảo tính duy nhất
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Images) // Một Product có nhiều Image
+                .WithOne(i => i.Product) // Một Image thuộc về một Product
+                .HasForeignKey(i => i.ProductId)
+                .OnDelete(DeleteBehavior.Cascade); // Xóa Product thì xóa luôn các ảnh liên quan
         }
     }
 }

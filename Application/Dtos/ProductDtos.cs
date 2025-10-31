@@ -18,8 +18,8 @@ namespace Application.Dtos
         public int StockQuantity { get; set; }
         public Dictionary<string, string>? Specifications { get; set; }
         public int ProductCategoryId { get; set; } // ID của danh mục cha
-        public IFormFile? ImageFile { get; set; } // Upload file
-        public string? ImageUrl { get; set; }
+        public List<IFormFile>? ImageFiles { get; set; } // Danh sách file upload
+        public List<string>? ImageUrls { get; set; }
     }
     public class UpdateProductDto
     {
@@ -32,9 +32,9 @@ namespace Application.Dtos
         public int StockQuantity { get; set; }
         public Dictionary<string, string>? Specifications { get; set; }
         public int ProductCategoryId { get; set; }
-        public IFormFile? ImageFile { get; set; } // Upload file mới
-        public string? ImageUrl { get; set; } // Hoặc cung cấp URL mới
-        public string? ExistingImageUrl { get; set; }
+        public List<IFormFile>? ImageFiles { get; set; } // Các file ảnh MỚI
+        public List<string>? ImageUrls { get; set; }// Hoặc cung cấp URL mới
+        public List<string>? ExistingImageUrls { get; set; }
     }
     public class ProductResponseDto
     {
@@ -42,7 +42,7 @@ namespace Application.Dtos
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public string? Features { get; set; }
-        public string? ImageUrl { get; set; }
+        public List<string> ImageUrls { get; set; } = new List<string>();
         public bool IsPopular { get; set; }
         public decimal BasePrice { get; set; }
         public decimal? MaxPrice { get; set; }

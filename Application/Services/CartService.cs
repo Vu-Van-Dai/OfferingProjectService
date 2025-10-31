@@ -135,7 +135,7 @@ namespace Application.Services
                         Id = item.Id,
                         ProductId = item.ProductId,
                         ProductName = item.Product.Name,
-                        ImageUrl = item.Product.ImageUrl,
+                        ImageUrl = item.Product.Images?.FirstOrDefault()?.ImageUrl,
                         Price = item.Product.BasePrice,
                         Quantity = item.Quantity,
                         IsSelected = item.IsSelected

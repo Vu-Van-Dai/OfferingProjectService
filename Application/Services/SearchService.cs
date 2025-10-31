@@ -39,7 +39,7 @@ namespace Application.Services
             {
                 Id = p.Id,
                 Name = p.Name,
-                ImageUrl = p.ImageUrl,
+                ImageUrl = p.Images?.FirstOrDefault()?.ImageUrl,
                 BasePrice = p.BasePrice,
                 ShopName = p.Shop.Name // Lấy tên shop từ đối tượng Shop đã Include
             }).ToList();
@@ -55,7 +55,7 @@ namespace Application.Services
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    ImageUrl = p.ImageUrl,
+                    ImageUrl = p.Images?.FirstOrDefault()?.ImageUrl,
                     BasePrice = p.BasePrice,
                     ShopName = s.Name
                 }).ToList()
