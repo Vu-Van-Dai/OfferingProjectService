@@ -17,6 +17,8 @@ namespace Core.Entities
         public string? Description { get; set; }
         public string? ImageUrl { get; set; } // Avatar của shop
         public DateTime JoinDate { get; set; } = DateTime.UtcNow;
+        [MaxLength(20)]
+        public string? ContactPhoneNumber { get; set; }
 
         // Mối quan hệ 1-1: Một Shop được sở hữu bởi một AppUser
         public Guid OwnerUserId { get; set; }

@@ -18,25 +18,30 @@ namespace Application.Services
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<IEnumerable<ProductCategory>> GetAllAsync()
+        public async Task<IEnumerable<CategorySummaryDto>> GetAllAsync()
         {
-            // Chỉ cần gọi repository
-            return await _categoryRepository.GetAllAsync();
+            var categories = await _categoryRepository.GetAllAsync();
+            // Map sang DTO
+            return categories.Select(c => new CategorySummaryDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Description = c.Description, // Thêm Description
+                ImageUrl = c.ImageUrl,
+                ProductCount = c.Products.Count // Lấy số lượng SP từ collection đã Include
+            });
         }
 
         public async Task<ProductCategory> CreateAsync(CreateCategoryDto categoryDto)
         {
-            // Chuyển đổi (map) DTO thành Entity
             var newCategory = new ProductCategory
             {
                 Name = categoryDto.Name,
                 Description = categoryDto.Description,
                 ImageUrl = categoryDto.ImageUrl
             };
-
             await _categoryRepository.AddAsync(newCategory);
             await _categoryRepository.SaveChangesAsync();
-
             return newCategory;
         }
         public async Task<bool> UpdateAsync(int id, UpdateCategoryDto categoryDto)

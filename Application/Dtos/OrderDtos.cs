@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,5 +37,26 @@ namespace Application.Dtos
         public decimal Total { get; set; }
         public ShippingAddress ShippingAddress { get; set; }
         public List<OrderItemDto> Items { get; set; } = new List<OrderItemDto>();
+    }
+    public class ShopOrderItemDto
+    {
+        public int OrderItemId { get; set; }
+        public int OrderId { get; set; }
+        public DateTime OrderDate { get; set; }
+        public string ProductName { get; set; } = string.Empty;
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+        public string CurrentShopStatus { get; set; } = string.Empty;
+        // Thông tin người mua để shop liên hệ
+        public string BuyerName { get; set; } = string.Empty;
+        public string BuyerPhoneNumber { get; set; } = string.Empty;
+        public ShippingAddress ShippingAddress { get; set; } = null!; // Không bao giờ null
+    }
+
+    public class UpdateOrderItemStatusDto
+    {
+        [Required]
+        [EnumDataType(typeof(OrderItemShopStatus))] // Đảm bảo giá trị hợp lệ
+        public OrderItemShopStatus NewStatus { get; set; }
     }
 }

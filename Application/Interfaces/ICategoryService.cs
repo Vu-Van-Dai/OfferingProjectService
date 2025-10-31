@@ -11,7 +11,7 @@ namespace Application.Interfaces
     public interface ICategoryService
     {
         // Lấy tất cả danh mục (cho trang "Danh Mục Sản Phẩm")
-        Task<IEnumerable<ProductCategory>> GetAllAsync();
+        Task<IEnumerable<CategorySummaryDto>> GetAllAsync();
 
         // Tạo danh mục mới (cho Admin)
         Task<ProductCategory> CreateAsync(CreateCategoryDto categoryDto);

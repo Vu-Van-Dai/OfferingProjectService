@@ -29,5 +29,13 @@ namespace Infrastructure.Repositorie
         {
             return await _context.SaveChangesAsync();
         }
+        public async Task<IEnumerable<ProductReview>> GetByShopIdAsync(int shopId)
+        {
+            return await _context.ProductReviews
+                .Include(r => r.Product) // Cần Include Product để lấy tên SP
+                .Where(r => r.Product.ShopId == shopId)
+                .OrderByDescending(r => r.ReviewDate)
+                .ToListAsync();
+        }
     }
 }
