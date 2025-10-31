@@ -16,7 +16,7 @@ namespace Application.Dtos
         public decimal BasePrice { get; set; }
         public decimal? MaxPrice { get; set; }
         public int StockQuantity { get; set; }
-        public string? Specifications { get; set; }
+        public Dictionary<string, string>? Specifications { get; set; }
         public int ProductCategoryId { get; set; } // ID của danh mục cha
         public IFormFile? ImageFile { get; set; } // Upload file
         public string? ImageUrl { get; set; }
