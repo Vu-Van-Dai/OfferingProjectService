@@ -21,5 +21,6 @@ namespace Application.Interfaces
         Task<int> CountByShopIdAsync(int shopId);
         Task<int> CountInStockByShopIdAsync(int shopId);
         Task<int> CountOutOfStockByShopIdAsync(int shopId);
+        Task<List<Product>> GetAllWithShopAndCategoryAsync();
     }
 }

@@ -11,6 +11,7 @@ namespace Application.Interfaces
     {
         Task<ProductCategory?> GetByIdAsync(int id);
         Task<IEnumerable<ProductCategory>> GetAllAsync();
+        Task<List<ProductCategory>> GetAllWithProductCountAsync();
         Task AddAsync(ProductCategory category);
         void Update(ProductCategory category); // Dùng cho Admin
         void Delete(ProductCategory category); // Dùng cho Admin

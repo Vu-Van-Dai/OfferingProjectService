@@ -21,22 +21,17 @@ namespace Application.Services
 
         public async Task<ShopDashboardDto> GetShopDashboardAsync(int shopId)
         {
-            // Chạy các task bất đồng bộ song song để tăng hiệu năng
-            var totalProductsTask = _productRepository.CountByShopIdAsync(shopId);
-            var inStockTask = _productRepository.CountInStockByShopIdAsync(shopId);
-            var outOfStockTask = _productRepository.CountOutOfStockByShopIdAsync(shopId);
-            var pendingOrdersTask = _orderItemRepository.CountPendingByShopIdAsync(shopId);
+            var totalProducts = await _productRepository.CountByShopIdAsync(shopId);
+            var inStock = await _productRepository.CountInStockByShopIdAsync(shopId);
+            var outOfStock = await _productRepository.CountOutOfStockByShopIdAsync(shopId);
+            var pendingOrders = await _orderItemRepository.CountPendingByShopIdAsync(shopId);
 
-            // Đợi tất cả hoàn thành
-            await Task.WhenAll(totalProductsTask, inStockTask, outOfStockTask, pendingOrdersTask);
-
-            // Lấy kết quả
             return new ShopDashboardDto
             {
-                TotalProducts = await totalProductsTask,
-                ProductsInStock = await inStockTask,
-                OutOfStockProducts = await outOfStockTask,
-                PendingOrderItems = await pendingOrdersTask
+                TotalProducts = totalProducts,
+                ProductsInStock = inStock,
+                OutOfStockProducts = outOfStock,
+                PendingOrderItems = pendingOrders
             };
         }
     }

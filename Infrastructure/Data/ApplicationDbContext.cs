@@ -21,7 +21,8 @@ namespace Infrastructure.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
-
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
+        public DbSet<AppSetting> AppSettings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

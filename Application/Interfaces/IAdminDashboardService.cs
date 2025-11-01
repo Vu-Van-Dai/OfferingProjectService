@@ -1,5 +1,4 @@
 ﻿using Application.Dtos;
-using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IShopService
+    public interface IAdminDashboardService
     {
-        Task<Shop> CreateShopAsync(Guid ownerUserId, CreateShopDto shopDto);
+        Task<AdminDashboardStatsDto> GetRevenueStatsAsync();
+        Task<IEnumerable<AdminShopRevenueDto>> GetRevenueByShopAsync();
     }
 }

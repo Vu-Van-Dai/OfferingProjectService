@@ -47,5 +47,19 @@ namespace Infrastructure.Repositorie
         {
             _context.Shops.Update(shop);
         }
+        public async Task<List<Shop>> GetAllWithOwnersAsync()
+        {
+            return await _context.Shops
+                .Include(s => s.OwnerUser) // Include thông tin chủ shop
+                .OrderBy(s => s.Name)
+                .ToListAsync();
+        }
+
+        public async Task<Shop?> GetByIdWithOwnerAsync(int id)
+        {
+            return await _context.Shops
+                .Include(s => s.OwnerUser) // Include thông tin chủ shop
+                .FirstOrDefaultAsync(s => s.Id == id);
+        }
     }
 }

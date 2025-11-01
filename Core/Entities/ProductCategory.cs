@@ -22,5 +22,7 @@ namespace Core.Entities
 
         // Mối quan hệ: Một danh mục có nhiều sản phẩm
         public ICollection<Product> Products { get; set; } = new List<Product>();
+        public bool IsHidden { get; set; } = false; // Admin ẩn/hiện
+        public int DisplayOrder { get; set; } = 0; // Admin sắp xếp
     }
 }

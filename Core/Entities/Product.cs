@@ -30,6 +30,7 @@ namespace Core.Entities
         public decimal? MaxPrice { get; set; } // Giá tối đa (ví dụ: 150.000đ)
                                                // Nếu null, FE sẽ chỉ hiển thị BasePrice
         public int StockQuantity { get; set; } // Số lượng trong kho
+        public bool IsHidden { get; set; } = false; // Admin ẩn sản phẩm vi phạm
         public string? Specifications { get; set; } // "Thông số kỹ thuật" (Lưu dạng JSON hoặc chuỗi)
         // Mối quan hệ: Một sản phẩm thuộc về một danh mục
         [MaxLength(250)]
