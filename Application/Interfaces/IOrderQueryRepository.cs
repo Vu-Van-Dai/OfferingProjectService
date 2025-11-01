@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Application.Dtos;
+using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace Application.Interfaces
     {
         Task<List<Order>> GetCompletedOrdersForShopByMonthAsync(int shopId, DateTime startOfMonth);
         Task<Dictionary<DateTime, decimal>> GetDailyRevenueForShopLastDaysAsync(int shopId, DateTime startDate);
+        Task<decimal> GetTotalRevenueAsync(DateTime startTime, DateTime endTime);
+        Task<List<AdminShopRevenueDto>> GetTotalRevenueByShopAsync(DateTime startTime, DateTime endTime);
     }
 }

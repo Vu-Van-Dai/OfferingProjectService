@@ -49,5 +49,13 @@ namespace Infrastructure.Repositorie
         {
             return await _context.SaveChangesAsync();
         }
+        public async Task<List<ProductCategory>> GetAllWithProductCountAsync()
+        {
+            return await _context.ProductCategories
+                .Include(c => c.Products) // Cần Include để .Count()
+                .OrderBy(c => c.DisplayOrder) // Sắp xếp theo thứ tự
+                .ThenBy(c => c.Name)
+                .ToListAsync();
+        }
     }
 }

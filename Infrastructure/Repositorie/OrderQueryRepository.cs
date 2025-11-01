@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Dtos;
+using Application.Interfaces;
 using Core.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,34 @@ namespace Infrastructure.Repositorie
                 })
                 .OrderBy(x => x.Date)
                 .ToDictionaryAsync(x => x.Date, x => x.Revenue);
+        }
+        public async Task<decimal> GetTotalRevenueAsync(DateTime startTime, DateTime endTime)
+        {
+            // Tính tổng tiền của tất cả OrderItem trong các đơn hàng đã Hoàn thành
+            return await _context.OrderItems
+                .Where(oi => oi.Order.Status == OrderStatus.Completed &&
+                             oi.Order.OrderDate >= startTime &&
+                             oi.Order.OrderDate < endTime)
+                .SumAsync(oi => oi.Price * oi.Quantity);
+        }
+
+        public async Task<List<AdminShopRevenueDto>> GetTotalRevenueByShopAsync(DateTime startTime, DateTime endTime)
+        {
+            // Tính tổng tiền, nhóm theo Shop
+            return await _context.OrderItems
+                .Where(oi => oi.Order.Status == OrderStatus.Completed &&
+                             oi.Order.OrderDate >= startTime &&
+                             oi.Order.OrderDate < endTime)
+                .Include(oi => oi.Shop) // Lấy thông tin Shop
+                .GroupBy(oi => oi.Shop) // Nhóm theo đối tượng Shop
+                .Select(g => new AdminShopRevenueDto
+                {
+                    ShopId = g.Key.Id,
+                    ShopName = g.Key.Name,
+                    TotalRevenue = g.Sum(oi => oi.Price * oi.Quantity)
+                })
+                .OrderByDescending(dto => dto.TotalRevenue) // Sắp xếp shop doanh thu cao lên đầu
+                .ToListAsync();
         }
     }
 }

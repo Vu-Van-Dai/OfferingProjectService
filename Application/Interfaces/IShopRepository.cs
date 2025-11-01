@@ -15,5 +15,7 @@ namespace Application.Interfaces
         Task<Shop?> GetByOwnerUserIdAsync(Guid ownerUserId);
         Task<Shop?> GetByIdAsync(int id); // Có thể cần nếu bạn muốn lấy shop theo ID
         void Update(Shop shop);
+        Task<List<Shop>> GetAllWithOwnersAsync(); // Lấy tất cả Shop kèm AppUser
+        Task<Shop?> GetByIdWithOwnerAsync(int id); // Lấy 1 Shop kèm AppUser
     }
 }
