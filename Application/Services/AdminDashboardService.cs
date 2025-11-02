@@ -27,19 +27,17 @@ namespace Application.Services
             var tomorrow = today.AddDays(1);
 
             // Chạy các truy vấn song song
-            var revenueTodayTask = _orderQueryRepo.GetTotalRevenueAsync(today, tomorrow);
-            var revenueThisWeekTask = _orderQueryRepo.GetTotalRevenueAsync(startOfWeek, tomorrow);
-            var revenueThisMonthTask = _orderQueryRepo.GetTotalRevenueAsync(startOfMonth, tomorrow);
-            var revenueThisYearTask = _orderQueryRepo.GetTotalRevenueAsync(startOfYear, tomorrow);
-
-            await Task.WhenAll(revenueTodayTask, revenueThisWeekTask, revenueThisMonthTask, revenueThisYearTask);
+            var revenueToday = await _orderQueryRepo.GetTotalRevenueAsync(today, tomorrow);
+            var revenueThisWeek = await _orderQueryRepo.GetTotalRevenueAsync(startOfWeek, tomorrow);
+            var revenueThisMonth = await _orderQueryRepo.GetTotalRevenueAsync(startOfMonth, tomorrow);
+            var revenueThisYear = await _orderQueryRepo.GetTotalRevenueAsync(startOfYear, tomorrow);
 
             return new AdminDashboardStatsDto
             {
-                RevenueToday = await revenueTodayTask,
-                RevenueThisWeek = await revenueThisWeekTask,
-                RevenueThisMonth = await revenueThisMonthTask,
-                RevenueThisYear = await revenueThisYearTask
+                RevenueToday = revenueToday,
+                RevenueThisWeek = revenueThisWeek,
+                RevenueThisMonth = revenueThisMonth,
+                RevenueThisYear = revenueThisYear
             };
         }
 

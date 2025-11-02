@@ -107,6 +107,7 @@ namespace Application.Dtos
         public string CategoryName { get; set; } = string.Empty;
         public decimal BasePrice { get; set; }
         public bool IsHidden { get; set; } // Trạng thái
+        public string Status { get; set; } = "Hết hàng";
     }
 
     // DTO nhận vào khi Admin chuyển Category
