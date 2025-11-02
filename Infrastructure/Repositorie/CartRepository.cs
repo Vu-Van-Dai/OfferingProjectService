@@ -19,7 +19,8 @@ namespace Infrastructure.Repositorie
         {
             return await _context.Carts
                 .Include(c => c.Items)
-                    .ThenInclude(ci => ci.Product) // Include Product để lấy giá, tên, ảnh
+                    .ThenInclude(ci => ci.Product)
+                        .ThenInclude(p => p.Images)// Include Product để lấy giá, tên, ảnh
                 .Include(c => c.Items)
                     .ThenInclude(ci => ci.Shop) // Include Shop để nhóm
                 .FirstOrDefaultAsync(c => c.OwnerUserId == userId);

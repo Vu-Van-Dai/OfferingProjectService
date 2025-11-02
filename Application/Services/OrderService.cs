@@ -119,6 +119,36 @@ namespace Application.Services
             // 10. Map sang DTO để trả về
             return MapOrderToDto(order);
         }
+        public async Task<OrderResponseDto?> GetOrderDetailsAsync(Guid userId, int orderId)
+        {
+            var order = await _orderRepository.GetByIdAndUserIdAsync(orderId, userId);
+
+            if (order == null)
+            {
+                return null; // Không tìm thấy hoặc không có quyền xem
+            }
+
+            return MapOrderToDto(order); // Dùng lại hàm map cũ
+        }
+
+        public async Task<IEnumerable<OrderHistoryDto>> GetOrderHistoryAsync(Guid userId)
+        {
+            var orders = await _orderRepository.GetListByUserIdAsync(userId);
+
+            // Map danh sách Entity Order sang danh sách OrderHistoryDto
+            return orders.Select(o => new OrderHistoryDto
+            {
+                Id = o.Id,
+                OrderDate = o.OrderDate,
+                Status = o.Status.ToString(),
+                Total = o.Total,
+                TotalItems = o.Items.Count,
+
+                // Lấy thông tin tóm tắt của món hàng đầu tiên
+                PrimaryProductName = o.Items.FirstOrDefault()?.ProductOrdered.Name ?? "N/A",
+                PrimaryProductImage = o.Items.FirstOrDefault()?.ProductOrdered.Images.FirstOrDefault()?.ImageUrl
+            });
+        }
 
         // Hàm map sang DTO (tương tự MapCartToDto)
         private OrderResponseDto MapOrderToDto(Order order)

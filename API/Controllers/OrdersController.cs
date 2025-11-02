@@ -45,11 +45,19 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrderById(int id)
         {
-            // Logic lấy đơn hàng theo Id và kiểm tra quyền sở hữu...
-            // var order = await _orderService.GetOrderByIdAsync(GetUserId(), id);
-            // if (order == null) return NotFound();
-            // return Ok(order);
-            return Ok($"Lấy thông tin đơn hàng {id}"); // Placeholder
+            // Gọi hàm service mới (có kiểm tra UserId)
+            var order = await _orderService.GetOrderDetailsAsync(GetUserId(), id);
+
+            if (order == null)
+                return NotFound(new { message = "Không tìm thấy đơn hàng hoặc bạn không có quyền xem." });
+
+            return Ok(order);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetOrderHistory()
+        {
+            var orders = await _orderService.GetOrderHistoryAsync(GetUserId());
+            return Ok(orders);
         }
     }
 }

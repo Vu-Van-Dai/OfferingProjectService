@@ -59,4 +59,16 @@ namespace Application.Dtos
         [EnumDataType(typeof(OrderItemShopStatus))] // Đảm bảo giá trị hợp lệ
         public OrderItemShopStatus NewStatus { get; set; }
     }
+    public class OrderHistoryDto
+    {
+        public int Id { get; set; }
+        public DateTime OrderDate { get; set; }
+        public string Status { get; set; } = string.Empty;
+        public decimal Total { get; set; }
+        public int TotalItems { get; set; } // Tổng số loại sản phẩm trong đơn
+
+        // Thông tin tóm tắt của sản phẩm đầu tiên
+        public string PrimaryProductName { get; set; } = string.Empty;
+        public string? PrimaryProductImage { get; set; }
+    }
 }

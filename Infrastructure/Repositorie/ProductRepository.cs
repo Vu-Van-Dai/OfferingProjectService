@@ -104,7 +104,8 @@ namespace Infrastructure.Repositorie
         {
             return await _context.Products
                 .Include(p => p.Shop) // Include thông tin Shop
-                .Include(p => p.ProductCategory) // Include thông tin Category
+                .Include(p => p.ProductCategory)// Include thông tin Category
+                .Include(p => p.Images)
                 .OrderByDescending(p => p.Id) // Sắp xếp sản phẩm mới nhất lên đầu
                 .ToListAsync();
         }

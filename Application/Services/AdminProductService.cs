@@ -33,7 +33,8 @@ namespace Application.Services
                 ShopName = p.Shop?.Name ?? "N/A",
                 CategoryName = p.ProductCategory?.Name ?? "N/A",
                 BasePrice = p.BasePrice,
-                IsHidden = p.IsHidden
+                IsHidden = p.IsHidden,
+                Status = p.StockQuantity > 0 ? "Còn hàng" : "Hết hàng"
             });
         }
 
