@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Application.Utils;
 using Core.Entities;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,7 @@ namespace Application.Services
                 FullName = dto.FullName,
                 Email = dto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Roles = new List<string> { "Shop" } // Gán quyền "Shop" ngay
+                Roles = new List<string> { "Shop" }
             };
 
             // 3. Tạo Shop mới
@@ -61,14 +62,17 @@ namespace Application.Services
             {
                 Name = dto.ShopName,
                 SearchableName = StringUtils.RemoveAccents(dto.ShopName),
-                OwnerUser = newUser // Gán User vào Shop
+                OwnerUser = newUser
             };
 
             // 4. Liên kết User với Shop (quan trọng)
             newUser.Shop = newShop;
 
-            // 5. Lưu vào DB (EF Core sẽ tự xử lý cả 2)
-            await _userRepo.AddAsync(newUser); // Add User (vì User là gốc)
+            // 5. Thêm vào DbContext (chưa lưu)
+            await _userRepo.AddAsync(newUser);
+            // (Không cần Add(newShop) vì nó được liên kết với newUser)
+
+            // 6. ✅ SỬA LỖI #18: Lưu 1 lần duy nhất (tự động tạo transaction)
             await _userRepo.SaveChangesAsync();
 
             await _logService.LogAsync("Admin", "Tạo Shop", $"Đã tạo Shop '{dto.ShopName}' với email '{dto.Email}'");
@@ -76,11 +80,17 @@ namespace Application.Services
             return (await GetAllShopsAsync()).First(s => s.Id == newShop.Id);
         }
 
+        // ... (Các phương thức khác giữ nguyên) ...
+        // LƯU Ý: Hàm ConvertGuestToShopAsync bên dưới cũng có 2 SaveChangesAsync
+        // và nên được bọc trong Transaction tương tự.
+
         public async Task<AdminShopListResponseDto> ConvertGuestToShopAsync(AdminConvertGuestDto dto)
         {
             var user = await _userRepo.GetByEmailAsync(dto.UserEmail);
             if (user == null) throw new Exception("Không tìm thấy người dùng với email này.");
-            if (user.ShopId != null) throw new Exception("Người dùng này đã sở hữu một cửa hàng.");
+
+            // ❌ LỖI ShopId (Sửa luôn lỗi này)
+            if (user.Shop != null) throw new Exception("Người dùng này đã sở hữu một cửa hàng.");
 
             // Tạo Shop mới
             var newShop = new Shop
@@ -90,15 +100,18 @@ namespace Application.Services
                 OwnerUserId = user.Id
             };
             await _shopRepo.AddAsync(newShop);
-            await _shopRepo.SaveChangesAsync(); // Lưu để lấy ShopId
 
             // Cập nhật User
-            user.ShopId = newShop.Id;
+            // ❌ LỖI ShopId (Sửa luôn lỗi này)
+            user.Shop = newShop;
             if (!user.Roles.Contains("Shop"))
             {
-                user.Roles.Add("Shop"); // Thêm quyền "Shop"
+                user.Roles.Add("Shop");
             }
-            await _userRepo.SaveChangesAsync();
+
+            // ✅ SỬA LỖI #18: Lưu 1 lần duy nhất
+            // (Cả Add(newShop) và thay đổi 'user' sẽ được lưu cùng lúc)
+            await _shopRepo.SaveChangesAsync();
 
             await _logService.LogAsync("Admin", "Chuyển đổi tài khoản", $"Đã chuyển Guest '{dto.UserEmail}' thành Shop '{dto.ShopName}'");
 

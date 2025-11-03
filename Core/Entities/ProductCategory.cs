@@ -13,9 +13,11 @@ namespace Core.Entities
     {
         public int Id { get; set; }
 
+        // ✅ SỬA LỖI #4:
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
+
         [MaxLength(250)]
         public string? BannerTitle { get; set; }
         public string? Description { get; set; }

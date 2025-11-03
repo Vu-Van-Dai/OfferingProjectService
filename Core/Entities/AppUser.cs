@@ -29,9 +29,12 @@ namespace Core.Entities
         public string PasswordHash { get; set; } = string.Empty; // Sẽ lưu mật khẩu đã được băm
 
         // Tự quản lý quyền bằng một danh sách các chuỗi
-        public ICollection<string> Roles { get; set; } = new List<string>();
+        // ✅ SỬA LỖI #1: Đổi ICollection thành List
+        public List<string> Roles { get; set; } = new List<string>();
+
         // Mối quan hệ: Một người dùng có thể viết nhiều đánh giá
-        public int? ShopId { get; set; }
+        // ❌ SỬA LỖI #1: Xóa dòng ShopId
+        // public int? ShopId { get; set; } 
         public Shop? Shop { get; set; }
         public Cart? Cart { get; set; }
         public ICollection<ProductReview> Reviews { get; set; } = new List<ProductReview>();

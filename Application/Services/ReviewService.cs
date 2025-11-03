@@ -13,11 +13,14 @@ namespace Application.Services
     {
         private readonly IReviewRepository _reviewRepository;
         private readonly IUserRepository _userRepository;
+        // ✅ SỬA LỖI #13: Thêm ProductRepository
+        private readonly IProductRepository _productRepository;
 
-        public ReviewService(IReviewRepository reviewRepository, IUserRepository userRepository)
+        public ReviewService(IReviewRepository reviewRepository, IUserRepository userRepository, IProductRepository productRepository) // Thêm vào constructor
         {
             _reviewRepository = reviewRepository;
             _userRepository = userRepository;
+            _productRepository = productRepository; // Thêm
         }
         public async Task<IEnumerable<ProductReview>> GetReviewsForProductAsync(int productId)
         {
@@ -27,6 +30,15 @@ namespace Application.Services
         {
             var user = await _userRepository.GetByIdAsync(userId);
             if (user == null) throw new Exception("Không tìm thấy người dùng.");
+
+            // ✅ SỬA LỖI #13: Thêm Validation
+            if (reviewDto.Rating < 1 || reviewDto.Rating > 5)
+                throw new ArgumentException("Rating phải từ 1-5", nameof(reviewDto.Rating));
+
+            var product = await _productRepository.GetByIdAsync(productId);
+            if (product == null) throw new Exception("Không tìm thấy sản phẩm.");
+            // (Bạn có thể thêm logic kiểm tra đã mua hàng ở đây - Lỗi #29)
+            // (Bạn có thể thêm logic kiểm tra đã review ở đây - Lỗi #30)
 
             var newReview = new ProductReview
             {

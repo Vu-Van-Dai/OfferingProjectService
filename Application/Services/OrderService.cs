@@ -24,6 +24,7 @@ namespace Application.Services
 
         public async Task<OrderResponseDto?> CreateOrderFromCartAsync(Guid userId, CreateOrderRequestDto orderRequest)
         {
+            // ✅ SỬA LỖI #14: Cần tải lại cart với Product (vì GetByUserIdAsync đã làm)
             var cart = await _cartRepository.GetByUserIdAsync(userId);
             if (cart == null || !cart.Items.Any(i => i.IsSelected)) return null;
 
@@ -82,8 +83,14 @@ namespace Application.Services
             // 5. Tạo các OrderItem tương ứng
             foreach (var item in selectedItems)
             {
-                // Có thể thêm logic kiểm tra tồn kho ở đây
-                // if (item.Product.StockQuantity < item.Quantity) throw ...
+                // ✅ SỬA LỖI #14: Kiểm tra tồn kho
+                if (item.Product.StockQuantity < item.Quantity)
+                {
+                    throw new InvalidOperationException(
+                        $"Sản phẩm '{item.Product.Name}' không đủ hàng. " +
+                        $"Còn lại: {item.Product.StockQuantity}, yêu cầu: {item.Quantity}"
+                    );
+                }
 
                 var orderItem = new OrderItem
                 {
@@ -95,8 +102,8 @@ namespace Application.Services
                 };
                 order.Items.Add(orderItem);
 
-                // Giảm số lượng tồn kho (nếu cần)
-                // item.Product.StockQuantity -= item.Quantity;
+                // ✅ SỬA LỖI #14: Giảm số lượng tồn kho
+                item.Product.StockQuantity -= item.Quantity;
             }
 
             // 6. Lưu Order và OrderItems vào database

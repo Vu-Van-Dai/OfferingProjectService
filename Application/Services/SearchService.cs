@@ -22,6 +22,10 @@ namespace Application.Services
 
         public async Task<GlobalSearchResponseDto> SearchAsync(string query)
         {
+            // ✅ SỬA LỖI #17: Thêm kiểm tra
+            if (string.IsNullOrWhiteSpace(query))
+                return new GlobalSearchResponseDto();
+
             var normalizedQuery = StringUtils.RemoveAccents(query);
             // 1. Thực hiện tìm kiếm song song sản phẩm và cửa hàng
             var productTask = _productRepository.SearchByNameAsync(normalizedQuery); // Gửi từ đã chuẩn hóa

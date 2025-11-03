@@ -103,8 +103,27 @@ namespace Application.Services
             return true;
         }
 
-        // Hàm map tiện ích
-        private AddressResponseDto MapToDto(UserAddress address) => new AddressResponseDto { /* ... map các thuộc tính ... */ };
-        private UserAddress MapFromDto(UpsertAddressDto dto) => new UserAddress { /* ... map các thuộc tính ... */ };
+        // ✅ SỬA LỖI #20: Triển khai các hàm map
+        private AddressResponseDto MapToDto(UserAddress address) => new AddressResponseDto
+        {
+            Id = address.Id,
+            FullName = address.FullName,
+            PhoneNumber = address.PhoneNumber,
+            Street = address.Street,
+            Ward = address.Ward,
+            District = address.District,
+            City = address.City,
+            IsDefault = address.IsDefault
+        };
+        private UserAddress MapFromDto(UpsertAddressDto dto) => new UserAddress
+        {
+            FullName = dto.FullName,
+            PhoneNumber = dto.PhoneNumber,
+            Street = dto.Street,
+            Ward = dto.Ward,
+            District = dto.District,
+            City = dto.City,
+            IsDefault = dto.IsDefault
+        };
     }
 }
