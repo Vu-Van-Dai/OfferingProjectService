@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Application.Dtos;
 
 namespace API.Controllers
 {
@@ -32,28 +33,21 @@ namespace API.Controllers
                 user.FullName,
                 user.Email,
                 user.PhoneNumber,
-                user.Introduction
+                user.Introduction,
+                user.AvatarUrl
             });
         }
 
         // PUT: api/profile/me
         [HttpPut("me")]
-        public async Task<IActionResult> UpdateMyProfile([FromBody] UpdateProfileDto profileDto)
+        public async Task<IActionResult> UpdateMyProfile([FromForm] UpdateProfileDto profileDto)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var result = await _profileService.UpdateProfileAsync(userId, profileDto.FullName, profileDto.PhoneNumber, profileDto.Introduction);
+            var result = await _profileService.UpdateProfileAsync(userId, profileDto);
 
             if (!result) return NotFound();
 
             return Ok(new { message = "Cập nhật thông tin thành công." });
         }
-    }
-
-    // DTO (Data Transfer Object) cho việc cập nhật profile
-    public class UpdateProfileDto
-    {
-        public string FullName { get; set; }
-        public string? PhoneNumber { get; set; }
-        public string? Introduction { get; set; }
     }
 }
