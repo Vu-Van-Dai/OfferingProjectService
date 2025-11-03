@@ -50,7 +50,7 @@ namespace Application.Services
                         // Xóa ảnh cũ nếu nó tồn tại (và không phải là link mặc định)
                         _imageService.DeleteImage(oldAvatarUrl);
                     }
-                    // Nếu SaveImageAsync trả về null, giữ nguyên ảnh cũ (finalAvatarUrl vẫn = user.AvatarUrl)
+                    // Nếu SaveImageAsync trả về null, giữ nguyên ảnh cũ
                 }
 
                 // Cập nhật thông tin user - FullName là required nên luôn có giá trị
@@ -75,7 +75,6 @@ namespace Application.Services
             {
                 throw new Exception($"Lỗi khi cập nhật profile: {ex.Message}", ex);
             }
-
         }
     }
 }
