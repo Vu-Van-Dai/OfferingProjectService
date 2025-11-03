@@ -34,12 +34,22 @@ namespace Application.Services
             if (shop == null) return false;
 
             string? newImageUrl = shop.ImageUrl; // Giữ ảnh cũ mặc định
+            string? oldImageUrl = shop.ImageUrl; // Lưu đường dẫn ảnh cũ để xóa sau
 
             // Kiểm tra file upload hợp lệ
             if (dto.ImageFile != null && dto.ImageFile.Length > 0)
             {
-                _imageService.DeleteImage(shop.ImageUrl); // Xóa ảnh cũ nếu có
-                newImageUrl = await _imageService.SaveImageAsync(dto.ImageFile, "shops"); // Lưu ảnh mới
+                // Lưu ảnh mới TRƯỚC
+                var savedImageUrl = await _imageService.SaveImageAsync(dto.ImageFile, "shops");
+                
+                // Chỉ cập nhật và xóa ảnh cũ nếu lưu ảnh mới thành công
+                if (!string.IsNullOrEmpty(savedImageUrl))
+                {
+                    newImageUrl = savedImageUrl;
+                    // Xóa ảnh cũ nếu nó tồn tại
+                    _imageService.DeleteImage(oldImageUrl);
+                }
+                // Nếu SaveImageAsync trả về null, giữ nguyên ảnh cũ
             }
             // Không có else if cho dto.ImageUrl vì chúng ta ưu tiên file
 

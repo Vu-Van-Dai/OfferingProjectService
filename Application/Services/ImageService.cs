@@ -33,10 +33,15 @@ namespace Application.Services
             }
 
             // ✅ SỬA LỖI #16: Thêm Validation
+            if (string.IsNullOrWhiteSpace(imageFile.FileName))
+            {
+                throw new ArgumentException("Tên file không hợp lệ.");
+            }
+
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
             var extension = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
 
-            if (!allowedExtensions.Contains(extension))
+            if (string.IsNullOrEmpty(extension) || !allowedExtensions.Contains(extension))
             {
                 throw new ArgumentException($"File extension '{extension}' không được phép. " +
                     $"Chỉ chấp nhận: {string.Join(", ", allowedExtensions)}");
@@ -49,8 +54,25 @@ namespace Application.Services
             }
             // (Kết thúc Lỗi #16)
 
+            // Xác định base path - ưu tiên WebRootPath, fallback sang ContentRootPath/wwwroot
+            string basePath;
+            if (!string.IsNullOrWhiteSpace(_webHostEnvironment.WebRootPath))
+            {
+                basePath = _webHostEnvironment.WebRootPath;
+            }
+            else
+            {
+                // Fallback: tạo wwwroot trong ContentRootPath nếu chưa có
+                basePath = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot");
+                if (!Directory.Exists(basePath))
+                {
+                    Directory.CreateDirectory(basePath);
+                    _logger.LogInformation("Đã tạo thư mục wwwroot tại: {BasePath}", basePath);
+                }
+            }
+
             // Đường dẫn tuyệt đối đến thư mục lưu ảnh (ví dụ: C:\project\wwwroot\images\products)
-            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", subFolder);
+            var uploadsFolder = Path.Combine(basePath, "images", subFolder);
 
             // Tạo thư mục nếu chưa tồn tại
             if (!Directory.Exists(uploadsFolder))
@@ -105,8 +127,25 @@ namespace Application.Services
                 return;
             }
 
+            // Xác định base path - ưu tiên WebRootPath, fallback sang ContentRootPath/wwwroot
+            string basePath;
+            if (!string.IsNullOrWhiteSpace(_webHostEnvironment.WebRootPath))
+            {
+                basePath = _webHostEnvironment.WebRootPath;
+            }
+            else
+            {
+                basePath = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot");
+                if (!Directory.Exists(basePath))
+                {
+                    // Không có wwwroot thì không thể xóa
+                    _logger.LogWarning("WebRootPath is null and wwwroot folder not found. Cannot delete image: {ImagePath}", imagePath);
+                    return;
+                }
+            }
+
             // Chuyển đường dẫn tương đối thành đường dẫn tuyệt đối
-            var fullPath = Path.Combine(_webHostEnvironment.WebRootPath, imagePath.TrimStart('/'));
+            var fullPath = Path.Combine(basePath, imagePath.TrimStart('/'));
 
             if (File.Exists(fullPath))
             {

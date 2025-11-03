@@ -42,12 +42,31 @@ namespace API.Controllers
         [HttpPut("me")]
         public async Task<IActionResult> UpdateMyProfile([FromForm] UpdateProfileDto profileDto)
         {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var result = await _profileService.UpdateProfileAsync(userId, profileDto);
+            try
+            {
+                // Validate model state
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ.", errors = ModelState });
+                }
 
-            if (!result) return NotFound();
+                var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var result = await _profileService.UpdateProfileAsync(userId, profileDto);
 
-            return Ok(new { message = "Cập nhật thông tin thành công." });
+                if (!result) return NotFound(new { message = "Không tìm thấy người dùng." });
+
+                return Ok(new { message = "Cập nhật thông tin thành công." });
+            }
+            catch (ArgumentException ex)
+            {
+                // Lỗi validation file (extension, size)
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Log error và trả về 500 với message
+                return StatusCode(500, new { message = "Lỗi server khi cập nhật profile.", error = ex.Message });
+            }
         }
     }
 }

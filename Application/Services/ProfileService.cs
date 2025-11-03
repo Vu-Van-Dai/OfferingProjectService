@@ -32,24 +32,51 @@ namespace Application.Services
             {
                 return false;
             }
-            string? finalAvatarUrl = user.AvatarUrl; // Giữ ảnh cũ mặc định
 
-            if (profileDto.AvatarFile != null && profileDto.AvatarFile.Length > 0)
+            try
             {
-                // Xóa ảnh cũ nếu nó tồn tại (và không phải là link mặc định)
-                _imageService.DeleteImage(user.AvatarUrl);
+                string? finalAvatarUrl = user.AvatarUrl; // Giữ ảnh cũ mặc định
+                string? oldAvatarUrl = user.AvatarUrl; // Lưu đường dẫn ảnh cũ để xóa sau
 
-                // Lưu ảnh mới vào thư mục "avatars"
-                finalAvatarUrl = await _imageService.SaveImageAsync(profileDto.AvatarFile, "avatars");
+                if (profileDto.AvatarFile != null && profileDto.AvatarFile.Length > 0)
+                {
+                    // Lưu ảnh mới vào thư mục "avatars" TRƯỚC
+                    var newAvatarUrl = await _imageService.SaveImageAsync(profileDto.AvatarFile, "avatars");
+
+                    // Chỉ cập nhật và xóa ảnh cũ nếu lưu ảnh mới thành công
+                    if (!string.IsNullOrEmpty(newAvatarUrl))
+                    {
+                        finalAvatarUrl = newAvatarUrl;
+                        // Xóa ảnh cũ nếu nó tồn tại (và không phải là link mặc định)
+                        _imageService.DeleteImage(oldAvatarUrl);
+                    }
+                    // Nếu SaveImageAsync trả về null, giữ nguyên ảnh cũ (finalAvatarUrl vẫn = user.AvatarUrl)
+                }
+
+                // Cập nhật thông tin user - FullName là required nên luôn có giá trị
+                if (string.IsNullOrWhiteSpace(profileDto.FullName))
+                {
+                    throw new ArgumentException("FullName không được để trống.");
+                }
+                user.FullName = profileDto.FullName;
+                user.PhoneNumber = profileDto.PhoneNumber;
+                user.Introduction = profileDto.Introduction;
+                user.AvatarUrl = finalAvatarUrl;
+
+                // Lưu vào database
+                await _userRepository.SaveChangesAsync();
+                return true;
             }
-
-            user.FullName = profileDto.FullName;
-            user.PhoneNumber = profileDto.PhoneNumber;
-            user.Introduction = profileDto.Introduction;
-            user.AvatarUrl = finalAvatarUrl;
-
-            await _userRepository.SaveChangesAsync();
-            return true;
+            catch (ArgumentException)
+            {
+                // Re-throw ArgumentException để controller có thể xử lý
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi và throw để controller xử lý
+                throw new Exception($"Lỗi khi cập nhật profile: {ex.Message}", ex);
+            }
         }
     }
 }

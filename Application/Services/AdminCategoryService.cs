@@ -69,17 +69,28 @@ namespace Application.Services
             var category = await _categoryRepo.GetByIdAsync(id);
             if (category == null) return false;
 
-            string? finalImageUrl = dto.ExistingImageUrl;
+            string? finalImageUrl = dto.ExistingImageUrl ?? category.ImageUrl; // Giữ ảnh cũ mặc định
+            string? oldImageUrl = category.ImageUrl; // Lưu đường dẫn ảnh cũ để xóa sau
 
             if (dto.ImageFile != null && dto.ImageFile.Length > 0)
             {
-                _imageService.DeleteImage(category.ImageUrl);
-                finalImageUrl = await _imageService.SaveImageAsync(dto.ImageFile, "categories");
+                // Lưu ảnh mới TRƯỚC
+                var savedImageUrl = await _imageService.SaveImageAsync(dto.ImageFile, "categories");
+                
+                // Chỉ cập nhật và xóa ảnh cũ nếu lưu ảnh mới thành công
+                if (!string.IsNullOrEmpty(savedImageUrl))
+                {
+                    finalImageUrl = savedImageUrl;
+                    // Xóa ảnh cũ nếu nó tồn tại
+                    _imageService.DeleteImage(oldImageUrl);
+                }
+                // Nếu SaveImageAsync trả về null, giữ nguyên ảnh cũ
             }
             else if (!string.IsNullOrWhiteSpace(dto.ImageUrl))
             {
-                _imageService.DeleteImage(category.ImageUrl);
+                // Khi set ImageUrl mới (link), chỉ xóa ảnh cũ nếu đó là file local
                 finalImageUrl = dto.ImageUrl;
+                _imageService.DeleteImage(oldImageUrl);
             }
 
             category.Name = dto.Name;
