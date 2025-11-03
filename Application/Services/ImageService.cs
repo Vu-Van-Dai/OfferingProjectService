@@ -113,6 +113,72 @@ namespace Application.Services
             }
         }
 
+        /// <summary>
+        /// Chuyển đổi file ảnh thành base64 string để lưu vào database.
+        /// Không tạo file trên server, chỉ convert và trả về string.
+        /// </summary>
+        public async Task<string?> ConvertToBase64Async(IFormFile? imageFile)
+        {
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                _logger.LogWarning("Không có file ảnh nào được cung cấp để convert.");
+                return null;
+            }
+
+            // Validation
+            if (string.IsNullOrWhiteSpace(imageFile.FileName))
+            {
+                throw new ArgumentException("Tên file không hợp lệ.");
+            }
+
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+            var extension = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
+
+            if (string.IsNullOrEmpty(extension) || !allowedExtensions.Contains(extension))
+            {
+                throw new ArgumentException($"File extension '{extension}' không được phép. " +
+                    $"Chỉ chấp nhận: {string.Join(", ", allowedExtensions)}");
+            }
+
+            const long maxFileSize = 5 * 1024 * 1024; // 5MB
+            if (imageFile.Length > maxFileSize)
+            {
+                throw new ArgumentException($"File quá lớn. Tối đa: {maxFileSize / 1024 / 1024}MB");
+            }
+
+            try
+            {
+                // Đọc file vào memory stream
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imageFile.CopyToAsync(memoryStream);
+                    var imageBytes = memoryStream.ToArray();
+
+                    // Xác định MIME type dựa trên extension
+                    var mimeType = extension switch
+                    {
+                        ".jpg" or ".jpeg" => "image/jpeg",
+                        ".png" => "image/png",
+                        ".gif" => "image/gif",
+                        ".webp" => "image/webp",
+                        _ => "image/jpeg"
+                    };
+
+                    // Convert sang base64
+                    var base64String = Convert.ToBase64String(imageBytes);
+                    var dataUrl = $"data:{mimeType};base64,{base64String}";
+
+                    _logger.LogInformation("Đã convert ảnh thành base64 thành công. Size: {Size} bytes", imageBytes.Length);
+                    return dataUrl;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi khi convert file ảnh sang base64: {FileName}", imageFile.FileName);
+                return null;
+            }
+        }
+
         public void DeleteImage(string? imagePath)
         {
             if (string.IsNullOrWhiteSpace(imagePath))

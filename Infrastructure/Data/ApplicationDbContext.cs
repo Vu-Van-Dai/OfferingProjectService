@@ -36,6 +36,11 @@ namespace Infrastructure.Data
                 .HasConversion(
                     v => string.Join(',', v),
                     v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList());
+
+            // Cấu hình AvatarUrl không có giới hạn độ dài để lưu base64 string
+            modelBuilder.Entity<AppUser>()
+                .Property(e => e.AvatarUrl)
+                .HasColumnType("nvarchar(max)");
             // Cấu hình AppUser 1-1 Shop
             modelBuilder.Entity<AppUser>()
                 .HasOne(u => u.Shop)

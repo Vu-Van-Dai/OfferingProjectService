@@ -76,7 +76,7 @@ namespace Application.Services
             {
                 // Lưu ảnh mới TRƯỚC
                 var savedImageUrl = await _imageService.SaveImageAsync(dto.ImageFile, "categories");
-                
+
                 // Chỉ cập nhật và xóa ảnh cũ nếu lưu ảnh mới thành công
                 if (!string.IsNullOrEmpty(savedImageUrl))
                 {

@@ -21,6 +21,13 @@ namespace Application.Interfaces
         Task<string?> SaveImageAsync(IFormFile? imageFile, string subFolder);
 
         /// <summary>
+        /// Chuyển đổi file ảnh thành base64 string để lưu vào database.
+        /// </summary>
+        /// <param name="imageFile">File ảnh được upload.</param>
+        /// <returns>Base64 string (data:image/xxx;base64,...) hoặc null nếu có lỗi.</returns>
+        Task<string?> ConvertToBase64Async(IFormFile? imageFile);
+
+        /// <summary>
         /// Xóa file ảnh dựa trên đường dẫn đã lưu.
         /// </summary>
         /// <param name="imagePath">Đường dẫn tương đối (hoặc URL) của ảnh cần xóa.</param>

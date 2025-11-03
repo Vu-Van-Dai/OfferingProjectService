@@ -39,8 +39,8 @@ namespace Core.Entities
         public Cart? Cart { get; set; }
         public ICollection<ProductReview> Reviews { get; set; } = new List<ProductReview>();
         public ICollection<UserAddress> Addresses { get; set; } = new List<UserAddress>();
-        [MaxLength(500)]
-        public string? AvatarUrl { get; set; } // Đường dẫn đến ảnh đại diện
+        // Lưu ảnh dưới dạng base64 hoặc URL vào database (không có giới hạn độ dài)
+        public string? AvatarUrl { get; set; } // Base64 string hoặc URL của ảnh đại diện
 
     }
 }

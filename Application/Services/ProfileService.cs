@@ -36,21 +36,18 @@ namespace Application.Services
             try
             {
                 string? finalAvatarUrl = user.AvatarUrl; // Giữ ảnh cũ mặc định
-                string? oldAvatarUrl = user.AvatarUrl; // Lưu đường dẫn ảnh cũ để xóa sau
 
                 if (profileDto.AvatarFile != null && profileDto.AvatarFile.Length > 0)
                 {
-                    // Lưu ảnh mới vào thư mục "avatars" TRƯỚC
-                    var newAvatarUrl = await _imageService.SaveImageAsync(profileDto.AvatarFile, "avatars");
+                    // Convert ảnh thành base64 và lưu vào database (KHÔNG tạo file trên server)
+                    var base64Avatar = await _imageService.ConvertToBase64Async(profileDto.AvatarFile);
 
-                    // Chỉ cập nhật và xóa ảnh cũ nếu lưu ảnh mới thành công
-                    if (!string.IsNullOrEmpty(newAvatarUrl))
+                    // Chỉ cập nhật nếu convert thành công
+                    if (!string.IsNullOrEmpty(base64Avatar))
                     {
-                        finalAvatarUrl = newAvatarUrl;
-                        // Xóa ảnh cũ nếu nó tồn tại (và không phải là link mặc định)
-                        _imageService.DeleteImage(oldAvatarUrl);
+                        finalAvatarUrl = base64Avatar;
                     }
-                    // Nếu SaveImageAsync trả về null, giữ nguyên ảnh cũ
+                    // Nếu ConvertToBase64Async trả về null, giữ nguyên ảnh cũ
                 }
 
                 // Cập nhật thông tin user - FullName là required nên luôn có giá trị
