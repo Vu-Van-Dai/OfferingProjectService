@@ -34,13 +34,20 @@ namespace Application.Services
             }
             string? finalAvatarUrl = user.AvatarUrl; // Giữ ảnh cũ mặc định
 
+            string? oldAvatarUrl = user.AvatarUrl; // Lưu đường dẫn ảnh cũ để xóa sau
+
             if (profileDto.AvatarFile != null && profileDto.AvatarFile.Length > 0)
             {
-                // Xóa ảnh cũ nếu nó tồn tại (và không phải là link mặc định)
-                _imageService.DeleteImage(user.AvatarUrl);
+                // Lưu ảnh mới vào thư mục "avatars" TRƯỚC
+                var newAvatarUrl = await _imageService.SaveImageAsync(profileDto.AvatarFile, "avatars");
 
-                // Lưu ảnh mới vào thư mục "avatars"
-                finalAvatarUrl = await _imageService.SaveImageAsync(profileDto.AvatarFile, "avatars");
+                // Chỉ cập nhật và xóa ảnh cũ nếu lưu ảnh mới thành công
+                if (!string.IsNullOrEmpty(newAvatarUrl))
+                {
+                    finalAvatarUrl = newAvatarUrl;
+                    // Xóa ảnh cũ nếu nó tồn tại (và không phải là link mặc định)
+                    _imageService.DeleteImage(oldAvatarUrl);
+                }
             }
 
             user.FullName = profileDto.FullName;
