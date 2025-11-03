@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251103081159_FixMissingConstraintsAndRelationships")]
-    partial class FixMissingConstraintsAndRelationships
+    [Migration("20251103082414_FixCascadeDeleteCycle")]
+    partial class FixCascadeDeleteCycle
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -662,7 +662,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Core.Entities.AppUser", "OwnerUser")
                         .WithOne("Shop")
                         .HasForeignKey("Core.Entities.Shop", "OwnerUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("OwnerUser");

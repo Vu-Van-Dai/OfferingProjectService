@@ -5,7 +5,7 @@
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class FixMissingConstraintsAndRelationships : Migration
+    public partial class FixCascadeDeleteCycle : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,6 +21,10 @@ namespace Infrastructure.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_ProductReviews_ProductReviews_ProductReviewId",
                 table: "ProductReviews");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Shops_AppUsers_OwnerUserId",
+                table: "Shops");
 
             migrationBuilder.DropIndex(
                 name: "IX_UserAddresses_UserId_IsDefault",
@@ -117,6 +121,13 @@ namespace Infrastructure.Migrations
                 principalTable: "AppUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Shops_AppUsers_OwnerUserId",
+                table: "Shops",
+                column: "OwnerUserId",
+                principalTable: "AppUsers",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
@@ -129,6 +140,10 @@ namespace Infrastructure.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_ProductReviews_AppUsers_UserId",
                 table: "ProductReviews");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Shops_AppUsers_OwnerUserId",
+                table: "Shops");
 
             migrationBuilder.DropIndex(
                 name: "IX_UserAddresses_UserId_IsDefault",
@@ -231,6 +246,14 @@ namespace Infrastructure.Migrations
                 column: "ProductReviewId",
                 principalTable: "ProductReviews",
                 principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Shops_AppUsers_OwnerUserId",
+                table: "Shops",
+                column: "OwnerUserId",
+                principalTable: "AppUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
     }
 }
