@@ -40,7 +40,8 @@ namespace Infrastructure.Data
             modelBuilder.Entity<AppUser>()
                 .HasOne(u => u.Shop)
                 .WithOne(s => s.OwnerUser)
-                .HasForeignKey<Shop>(s => s.OwnerUserId);
+                .HasForeignKey<Shop>(s => s.OwnerUserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Cấu hình Shop 1-n Product
             modelBuilder.Entity<Shop>()

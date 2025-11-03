@@ -659,7 +659,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Core.Entities.AppUser", "OwnerUser")
                         .WithOne("Shop")
                         .HasForeignKey("Core.Entities.Shop", "OwnerUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("OwnerUser");
