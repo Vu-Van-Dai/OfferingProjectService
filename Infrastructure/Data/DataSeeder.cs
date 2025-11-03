@@ -62,7 +62,7 @@ namespace Infrastructure.Data
                         await context.SaveChangesAsync(); // Lưu shop để lấy ShopId
 
                         // Cập nhật lại user với ShopId
-                        shopOwner.ShopId = shop.Id;
+                        shopOwner.Shop = shop;
                         context.AppUsers.Update(shopOwner); // Đánh dấu là user đã được cập nhật
                         await context.SaveChangesAsync(); // Lưu lại user
 
@@ -72,9 +72,9 @@ namespace Infrastructure.Data
                     {
                         logger.LogInformation($"Shop {shopName} đã tồn tại.");
                         // Đảm bảo User được liên kết đúng
-                        if (shopOwner.ShopId == null || shopOwner.ShopId != shop.Id)
+                        if (shopOwner.Shop == null || shopOwner.Shop.Id != shop.Id)
                         {
-                            shopOwner.ShopId = shop.Id;
+                            shopOwner.Shop = shop;
                             if (!shopOwner.Roles.Contains("Shop")) shopOwner.Roles.Add("Shop");
                             context.AppUsers.Update(shopOwner);
                             await context.SaveChangesAsync();

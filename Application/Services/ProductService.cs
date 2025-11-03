@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Application.Utils;
 using Core.Entities;
+using Microsoft.Extensions.Logging; // ✅ SỬA LỖI #15: Thêm
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,15 @@ namespace Application.Services
         private readonly IProductRepository _productRepository;
         private readonly IUserRepository _userRepository;
         private readonly IImageService _imageService;
+        // ✅ SỬA LỖI #15: Thêm Logger
+        private readonly ILogger<ProductService> _logger;
 
-        public ProductService(IProductRepository productRepository, IUserRepository userRepository, IImageService imageService)
+        public ProductService(IProductRepository productRepository, IUserRepository userRepository, IImageService imageService, ILogger<ProductService> logger) // Thêm vào constructor
         {
             _productRepository = productRepository;
             _userRepository = userRepository;
             _imageService = imageService;
+            _logger = logger; // Thêm
         }
 
         public async Task<IEnumerable<ProductResponseDto>> GetAllAsync()
@@ -46,7 +50,7 @@ namespace Application.Services
         public async Task<Product> CreateAsync(CreateProductDto productDto, Guid userId)
         {
             var user = await _userRepository.GetByIdAsync(userId);
-            if (user?.ShopId == null)
+            if (user?.Shop == null)
                 throw new UnauthorizedAccessException("Người dùng này không sở hữu cửa hàng nào.");
 
             string? specificationsJson = null;
@@ -66,7 +70,7 @@ namespace Application.Services
                 MaxPrice = productDto.MaxPrice,
                 StockQuantity = productDto.StockQuantity,
                 ProductCategoryId = productDto.ProductCategoryId,
-                ShopId = (int)user.ShopId,
+                ShopId = (int)user.Shop.Id,
                 Images = new List<ProductImage>(),
                 Specifications = specificationsJson
             };
@@ -99,8 +103,8 @@ namespace Application.Services
         {
             var user = await _userRepository.GetByIdAsync(userId);
             var product = await _productRepository.GetByIdAsync(id); // Lấy product gốc
-            if (product == null || user?.ShopId == null) return false;
-            if (product.ShopId != user.ShopId)
+            if (product == null || user?.Shop == null) return false;
+            if (product.ShopId != user.Shop.Id)
                 throw new UnauthorizedAccessException("Bạn không có quyền sửa sản phẩm này.");
 
             string? specificationsJson = null;
@@ -173,14 +177,15 @@ namespace Application.Services
         {
             var user = await _userRepository.GetByIdAsync(userId);
             var product = await _productRepository.GetByIdAsync(id); // Lấy product gốc
-            if (product == null || user?.ShopId == null) return false;
-            if (product.ShopId != user.ShopId)
+            if (product == null || user?.Shop == null) return false;
+            if (product.ShopId != user.Shop.Id)
                 throw new UnauthorizedAccessException("Bạn không có quyền xóa sản phẩm này.");
 
             foreach (var img in product.Images)
             {
                 _imageService.DeleteImage(img.ImageUrl);
-            };
+            }
+            ;
             _productRepository.Delete(product);
             await _productRepository.SaveChangesAsync();
             return true;
@@ -198,10 +203,11 @@ namespace Application.Services
                     // Chuyển chuỗi JSON từ DB về lại Dictionary
                     specificationsDict = JsonSerializer.Deserialize<Dictionary<string, string>>(p.Specifications);
                 }
-                catch (JsonException)
+                // ✅ SỬA LỖI #15: Sửa khối catch
+                catch (JsonException ex)
                 {
-                    // Xử lý nếu JSON trong DB bị lỗi (ví dụ: trả về rỗng hoặc thông báo lỗi)
-                    specificationsDict = new Dictionary<string, string> { { "Lỗi", "Định dạng thông số kỹ thuật không hợp lệ." } };
+                    _logger.LogError(ex, "Invalid JSON in Product.Specifications for ProductId={ProductId}", p.Id);
+                    specificationsDict = new Dictionary<string, string>(); // Trả về dict rỗng
                 }
             }
 
@@ -225,4 +231,3 @@ namespace Application.Services
         }
     }
 }
-

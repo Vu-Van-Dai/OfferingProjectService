@@ -32,11 +32,13 @@ namespace Core.Entities
         public decimal Total { get; set; } // Tổng tiền cuối cùng
 
         // Địa chỉ giao hàng được nhúng trực tiếp vào Order
-        public ShippingAddress ShippingAddress { get; set; }
+        // ✅ SỬA LỖI #8:
+        public ShippingAddress ShippingAddress { get; set; } = null!;
 
         // Mối quan hệ: Đơn hàng của ai
         public Guid BuyerUserId { get; set; }
-        public AppUser Buyer { get; set; }
+        // ✅ SỬA LỖI #8:
+        public AppUser Buyer { get; set; } = null!;
 
         // Mối quan hệ: Đơn hàng gồm những món nào
         public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();

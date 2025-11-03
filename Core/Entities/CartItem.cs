@@ -15,14 +15,17 @@ namespace Core.Entities
 
         // Thuộc về giỏ hàng nào
         public int CartId { get; set; }
-        public Cart Cart { get; set; }
+        // ✅ SỬA LỖI #8:
+        public Cart Cart { get; set; } = null!;
 
         // Là sản phẩm nào
         public int ProductId { get; set; }
-        public Product Product { get; set; }
+        // ✅ SỬA LỖI #8:
+        public Product Product { get; set; } = null!;
 
         // Thuộc cửa hàng nào (để nhóm)
         public int ShopId { get; set; }
-        public Shop Shop { get; set; }
+        // ✅ SỬA LỖI #8:
+        public Shop Shop { get; set; } = null!;
     }
 }

@@ -16,6 +16,11 @@ namespace API.Services
 
         public string GenerateToken(AppUser user)
         {
+            // ✅ SỬA LỖI #12: Thêm kiểm tra
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrEmpty(user.Email))
+                throw new ArgumentException("User email cannot be null or empty", nameof(user));
+
             // 1. Tạo danh sách các "thông tin" (claims) sẽ chứa trong token
             var claims = new List<Claim>
             {
@@ -29,9 +34,10 @@ namespace API.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            if (user.Roles.Contains("Shop") && user.ShopId.HasValue)
+            // ✅ SỬA LỖI #1 (Liên quan): Dùng user.Shop.Id thay vì user.ShopId
+            if (user.Roles.Contains("Shop") && user.Shop != null)
             {
-                claims.Add(new Claim("ShopId", user.ShopId.Value.ToString()));
+                claims.Add(new Claim("ShopId", user.Shop.Id.ToString()));
             }
 
             // 2. Lấy khóa bí mật từ appsettings.json

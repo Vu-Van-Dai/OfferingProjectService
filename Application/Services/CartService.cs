@@ -46,10 +46,27 @@ namespace Application.Services
             var product = await _productRepository.GetByIdAsync(itemDto.ProductId); // Lấy sản phẩm (đã include Shop)
             if (product == null) throw new Exception("Không tìm thấy sản phẩm.");
 
+            // ✅ SỬA LỖI #19: Kiểm tra tồn kho
+            if (product.StockQuantity < itemDto.Quantity)
+            {
+                throw new InvalidOperationException(
+                    $"Sản phẩm '{product.Name}' chỉ còn {product.StockQuantity} sản phẩm."
+                );
+            }
+            // (Bạn cũng có thể kiểm tra tổng số lượng trong giỏ + số lượng thêm mới so với tồn kho)
+
             var existingItem = await _cartRepository.GetItemInCartAsync(cart.Id, itemDto.ProductId);
             if (existingItem != null)
             {
-                existingItem.Quantity += itemDto.Quantity;
+                // ✅ SỬA LỖI #19 (Logic bổ sung): Kiểm tra tồn kho khi tăng số lượng
+                int newQuantity = existingItem.Quantity + itemDto.Quantity;
+                if (product.StockQuantity < newQuantity)
+                {
+                    throw new InvalidOperationException(
+                        $"Sản phẩm '{product.Name}' không đủ hàng (Bạn đã có {existingItem.Quantity} trong giỏ)."
+                    );
+                }
+                existingItem.Quantity = newQuantity;
             }
             else
             {
@@ -84,6 +101,15 @@ namespace Application.Services
             }
             else
             {
+                // ✅ SỬA LỖI #19 (Logic bổ sung): Kiểm tra tồn kho khi cập nhật
+                var product = await _productRepository.GetByIdAsync(item.ProductId);
+                if (product == null) throw new Exception("Sản phẩm không còn tồn tại.");
+                if (product.StockQuantity < quantity)
+                {
+                    throw new InvalidOperationException(
+                       $"Sản phẩm '{product.Name}' chỉ còn {product.StockQuantity} sản phẩm."
+                   );
+                }
                 item.Quantity = quantity;
             }
             await _cartRepository.SaveChangesAsync();

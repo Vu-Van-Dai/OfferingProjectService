@@ -32,6 +32,23 @@ namespace Application.Services
                 return null; // Hoặc trả về URL ảnh mặc định nếu bạn muốn
             }
 
+            // ✅ SỬA LỖI #16: Thêm Validation
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+            var extension = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
+
+            if (!allowedExtensions.Contains(extension))
+            {
+                throw new ArgumentException($"File extension '{extension}' không được phép. " +
+                    $"Chỉ chấp nhận: {string.Join(", ", allowedExtensions)}");
+            }
+
+            const long maxFileSize = 5 * 1024 * 1024; // 5MB
+            if (imageFile.Length > maxFileSize)
+            {
+                throw new ArgumentException($"File quá lớn. Tối đa: {maxFileSize / 1024 / 1024}MB");
+            }
+            // (Kết thúc Lỗi #16)
+
             // Đường dẫn tuyệt đối đến thư mục lưu ảnh (ví dụ: C:\project\wwwroot\images\products)
             var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", subFolder);
 
@@ -50,7 +67,8 @@ namespace Application.Services
             }
 
             // Tạo tên file duy nhất để tránh trùng lặp
-            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+            // ✅ SỬA LỖI #16: Dùng 'extension' đã được validate
+            var uniqueFileName = Guid.NewGuid().ToString() + extension;
             var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
             try

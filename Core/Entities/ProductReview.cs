@@ -23,17 +23,18 @@ namespace Core.Entities
 
         // Mối quan hệ: Một đánh giá thuộc về một sản phẩm
         public int ProductId { get; set; }
-        public Product Product { get; set; }
+        // ✅ SỬA LỖI #8:
+        public Product Product { get; set; } = null!;
 
         // Mối quan hệ: Một đánh giá có thể được viết bởi 1 người dùng
         // (Có thể null nếu cho phép đánh giá không cần đăng nhập)
         public Guid? UserId { get; set; }
         public AppUser? User { get; set; }
-        // Dùng để lưu "Thông số kỹ thuật" (Xuất xứ, Trọng lượng...)
-        // Chúng ta sẽ lưu dưới dạng một chuỗi JSON
-        public string? Specifications { get; set; }
 
-        // Mối quan hệ: Một sản phẩm có nhiều đánh giá
-        public ICollection<ProductReview> Reviews { get; set; } = new List<ProductReview>();
+        // ❌ SỬA LỖI #7: Xóa thuộc tính sai
+        // public string? Specifications { get; set; }
+
+        // ❌ SỬA LỖI #7: Xóa thuộc tính sai (Review không thể chứa Review)
+        // public ICollection<ProductReview> Reviews { get; set; } = new List<ProductReview>();
     }
 }

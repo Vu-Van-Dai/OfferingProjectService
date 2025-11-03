@@ -27,15 +27,18 @@ namespace Core.Entities
 
         // Mối quan hệ: Thuộc đơn hàng nào
         public int OrderId { get; set; }
-        public Order Order { get; set; }
+        // ✅ SỬA LỖI #8:
+        public Order Order { get; set; } = null!;
 
         // Mối quan hệ: Là sản phẩm nào
         public int ProductId { get; set; }
-        public Product ProductOrdered { get; set; } // Đổi tên để tránh trùng
+        // ✅ SỬA LỖI #8:
+        public Product ProductOrdered { get; set; } = null!; // Đổi tên để tránh trùng
 
         // Mối quan hệ: Thuộc cửa hàng nào (để xử lý đơn cho shop)
         public int ShopId { get; set; }
-        public Shop Shop { get; set; }
+        // ✅ SỬA LỖI #8:
+        public Shop Shop { get; set; } = null!;
         public OrderItemShopStatus ShopStatus { get; set; } = OrderItemShopStatus.Pending;
     }
 }

@@ -12,7 +12,7 @@ namespace Infrastructure.Data
 
         // Thêm DbSet cho AppUser để EF Core tạo bảng
         public DbSet<AppUser> AppUsers { get; set; }
-        public DbSet<ProductCategory> ProductCategories { get; set; } // Thêm dòng này
+        public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Shop> Shops { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
@@ -21,6 +21,8 @@ namespace Infrastructure.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<UserAddress> UserAddresses { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+        //public DbSet<ProductCollection> ProductCollections { get; set; }
         public DbSet<ActivityLog> ActivityLogs { get; set; }
         public DbSet<AppSetting> AppSettings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -58,7 +60,7 @@ namespace Infrastructure.Data
                 .HasMany(u => u.Reviews)
                 .WithOne(r => r.User)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.NoAction); // Không cho xóa User nếu còn Review
+                .OnDelete(DeleteBehavior.Cascade); //xóa User thì xóa luôn Review
             // Cấu hình AppUser 1-1 Cart (Bắt buộc)
             modelBuilder.Entity<AppUser>()
                 .HasOne(u => u.Cart)
@@ -122,15 +124,60 @@ namespace Infrastructure.Data
                 .OnDelete(DeleteBehavior.Cascade); // Xóa User thì xóa luôn Address
 
             // Đảm bảo mỗi User chỉ có tối đa 1 địa chỉ mặc định (IsDefault = true)
+            // ✅ SỬA LỖI #9: Sửa Filter
             modelBuilder.Entity<UserAddress>()
                 .HasIndex(a => new { a.UserId, a.IsDefault })
-                .HasFilter("[IsDefault] = 1") // Chỉ áp dụng index cho các bản ghi có IsDefault = true
+                .HasFilter("([IsDefault] = CAST(1 AS bit))") // Sửa dòng này
                 .IsUnique(); // Đảm bảo tính duy nhất
+
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Images) // Một Product có nhiều Image
                 .WithOne(i => i.Product) // Một Image thuộc về một Product
                 .HasForeignKey(i => i.ProductId)
                 .OnDelete(DeleteBehavior.Cascade); // Xóa Product thì xóa luôn các ảnh liên quan
+
+            // ✅ THÊM MỚI: Lỗi #10 - Check Constraints
+            modelBuilder.Entity<CartItem>()
+                .ToTable(t => t.HasCheckConstraint("CK_CartItem_Quantity", "[Quantity] > 0"));
+
+            modelBuilder.Entity<OrderItem>()
+                .ToTable(t => t.HasCheckConstraint("CK_OrderItem_Quantity", "[Quantity] > 0"));
+            modelBuilder.Entity<OrderItem>()
+                .ToTable(t => t.HasCheckConstraint("CK_OrderItem_Price", "[Price] >= 0"));
+
+            modelBuilder.Entity<Shop>()
+                .ToTable(t => t.HasCheckConstraint(
+                    "CK_Shop_CommissionRate",
+                    "[CommissionRate] >= 0 AND [CommissionRate] <= 100"
+                ));
+
+            modelBuilder.Entity<Product>()
+                .ToTable(t => t.HasCheckConstraint("CK_Product_BasePrice", "[BasePrice] >= 0"));
+            modelBuilder.Entity<Product>()
+                .ToTable(t => t.HasCheckConstraint(
+                    "CK_Product_PriceRange",
+                    "[MaxPrice] IS NULL OR [MaxPrice] >= [BasePrice]"
+                ));
+
+            modelBuilder.Entity<ProductReview>()
+                .ToTable(t => t.HasCheckConstraint("CK_Review_Rating", "[Rating] BETWEEN 1 AND 5"));
+
+            // ✅ THÊM MỚI: Lỗi #11 - Column Type Specifications
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Description)
+                .HasColumnType("nvarchar(max)");
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Features)
+                .HasColumnType("nvarchar(max)");
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Specifications)
+                .HasColumnType("nvarchar(max)");
+
+            modelBuilder.Entity<ProductCategory>()
+                .Property(c => c.Description)
+                .HasColumnType("nvarchar(max)");
         }
     }
 }

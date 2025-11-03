@@ -13,7 +13,8 @@ namespace Core.Entities
 
         // Mối quan hệ 1-1 với người dùng (Bắt buộc)
         public Guid OwnerUserId { get; set; }
-        public AppUser OwnerUser { get; set; }
+        // ✅ SỬA LỖI #8:
+        public AppUser OwnerUser { get; set; } = null!;
 
         public ICollection<CartItem> Items { get; set; } = new List<CartItem>();
     }
