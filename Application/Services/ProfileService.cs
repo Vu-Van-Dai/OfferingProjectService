@@ -69,12 +69,10 @@ namespace Application.Services
             }
             catch (ArgumentException)
             {
-                // Re-throw ArgumentException để controller có thể xử lý
                 throw;
             }
             catch (Exception ex)
             {
-                // Log lỗi và throw để controller xử lý
                 throw new Exception($"Lỗi khi cập nhật profile: {ex.Message}", ex);
             }
 
