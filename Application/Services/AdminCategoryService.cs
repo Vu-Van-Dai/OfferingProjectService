@@ -13,11 +13,13 @@ namespace Application.Services
     {
         private readonly ICategoryRepository _categoryRepo;
         private readonly IActivityLogService _logService; // Inject dịch vụ Log
+        private readonly IImageService _imageService;
 
-        public AdminCategoryService(ICategoryRepository categoryRepo, IActivityLogService logService)
+        public AdminCategoryService(ICategoryRepository categoryRepo, IActivityLogService logService, IImageService imageService)
         {
             _categoryRepo = categoryRepo;
             _logService = logService;
+            _imageService = imageService;
         }
 
         public async Task<IEnumerable<AdminCategoryResponseDto>> GetAllCategoriesAsync()
@@ -35,11 +37,22 @@ namespace Application.Services
 
         public async Task<ProductCategory> CreateCategoryAsync(CreateCategoryDto dto)
         {
+            string? finalImageUrl = null;
+            if (dto.ImageFile != null && dto.ImageFile.Length > 0)
+            {
+                finalImageUrl = await _imageService.SaveImageAsync(dto.ImageFile, "categories");
+            }
+            else if (!string.IsNullOrWhiteSpace(dto.ImageUrl))
+            {
+                finalImageUrl = dto.ImageUrl;
+            }
+
             var newCategory = new ProductCategory
             {
                 Name = dto.Name,
+                BannerTitle = dto.BannerTitle,
                 Description = dto.Description,
-                ImageUrl = dto.ImageUrl,
+                ImageUrl = finalImageUrl,
                 IsHidden = false,
                 DisplayOrder = (await _categoryRepo.GetAllAsync()).Count() // Tự động xếp cuối
             };
@@ -56,9 +69,23 @@ namespace Application.Services
             var category = await _categoryRepo.GetByIdAsync(id);
             if (category == null) return false;
 
+            string? finalImageUrl = dto.ExistingImageUrl;
+
+            if (dto.ImageFile != null && dto.ImageFile.Length > 0)
+            {
+                _imageService.DeleteImage(category.ImageUrl);
+                finalImageUrl = await _imageService.SaveImageAsync(dto.ImageFile, "categories");
+            }
+            else if (!string.IsNullOrWhiteSpace(dto.ImageUrl))
+            {
+                _imageService.DeleteImage(category.ImageUrl);
+                finalImageUrl = dto.ImageUrl;
+            }
+
             category.Name = dto.Name;
+            category.BannerTitle = dto.BannerTitle;
             category.Description = dto.Description;
-            category.ImageUrl = dto.ImageUrl;
+            category.ImageUrl = finalImageUrl;
 
             _categoryRepo.Update(category);
             await _categoryRepo.SaveChangesAsync();

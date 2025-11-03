@@ -11,62 +11,39 @@ namespace Application.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly ICategoryRepository _categoryRepo;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepo)
         {
-            _categoryRepository = categoryRepository;
+            _categoryRepo = categoryRepo;
         }
 
-        public async Task<IEnumerable<CategorySummaryDto>> GetAllAsync()
+        public async Task<IEnumerable<CategorySummaryDto>> GetAllSummariesAsync()
         {
-            var categories = await _categoryRepository.GetAllAsync();
-            // Map sang DTO
+            var categories = await _categoryRepo.GetAllWithProductCountAsync();
             return categories.Select(c => new CategorySummaryDto
             {
                 Id = c.Id,
                 Name = c.Name,
-                Description = c.Description, // Thêm Description
-                ImageUrl = c.ImageUrl,
-                ProductCount = c.Products.Count // Lấy số lượng SP từ collection đã Include
+                ImageUrl = c.ImageUrl, // Icon
+                ProductCount = c.Products.Count
             });
         }
 
-        public async Task<ProductCategory> CreateAsync(CreateCategoryDto categoryDto)
+        // Hàm này lấy chi tiết (gồm BannerTitle)
+        public async Task<CategoryDetailDto?> GetCategoryDetailsByIdAsync(int id)
         {
-            var newCategory = new ProductCategory
+            var category = await _categoryRepo.GetByIdAsync(id);
+            if (category == null) return null;
+
+            return new CategoryDetailDto
             {
-                Name = categoryDto.Name,
-                Description = categoryDto.Description,
-                ImageUrl = categoryDto.ImageUrl
+                Id = category.Id,
+                Name = category.Name,
+                BannerTitle = category.BannerTitle, // Trả về tiêu đề banner
+                Description = category.Description, // Trả về mô tả
+                ImageUrl = category.ImageUrl // Trả về icon
             };
-            await _categoryRepository.AddAsync(newCategory);
-            await _categoryRepository.SaveChangesAsync();
-            return newCategory;
-        }
-        public async Task<bool> UpdateAsync(int id, UpdateCategoryDto categoryDto)
-        {
-            var existingCategory = await _categoryRepository.GetByIdAsync(id);
-            if (existingCategory == null) return false;
-
-            // Cập nhật thuộc tính
-            existingCategory.Name = categoryDto.Name;
-            existingCategory.Description = categoryDto.Description;
-            existingCategory.ImageUrl = categoryDto.ImageUrl;
-
-            _categoryRepository.Update(existingCategory);
-            await _categoryRepository.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var category = await _categoryRepository.GetByIdAsync(id);
-            if (category == null) return false;
-
-            _categoryRepository.Delete(category);
-            await _categoryRepository.SaveChangesAsync();
-            return true;
         }
     }
 }

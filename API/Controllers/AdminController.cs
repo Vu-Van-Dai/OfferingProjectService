@@ -41,14 +41,14 @@ namespace API.Controllers
             => Ok(await _categoryService.GetAllCategoriesAsync());
 
         [HttpPost("categories")]
-        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto)
+        public async Task<IActionResult> CreateCategory([FromForm] CreateCategoryDto dto)
         {
             var category = await _categoryService.CreateCategoryAsync(dto);
             return CreatedAtAction(nameof(GetCategories), new { id = category.Id }, category);
         }
 
         [HttpPut("categories/{id}")]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDto dto)
+        public async Task<IActionResult> UpdateCategory(int id, [FromForm] UpdateCategoryDto dto)
         {
             var result = await _categoryService.UpdateCategoryAsync(id, dto);
             if (!result) return NotFound();

@@ -16,7 +16,8 @@ namespace Core.Entities
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }
-
+        [MaxLength(250)]
+        public string? BannerTitle { get; set; }
         public string? Description { get; set; }
         public string? ImageUrl { get; set; } // Ảnh icon của danh mục
 
