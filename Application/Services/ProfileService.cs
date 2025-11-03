@@ -77,6 +77,7 @@ namespace Application.Services
                 // Log lỗi và throw để controller xử lý
                 throw new Exception($"Lỗi khi cập nhật profile: {ex.Message}", ex);
             }
+
         }
     }
 }
