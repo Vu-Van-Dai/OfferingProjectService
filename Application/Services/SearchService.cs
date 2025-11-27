@@ -13,23 +13,22 @@ namespace Application.Services
     {
         private readonly IProductRepository _productRepository;
         private readonly IShopRepository _shopRepository;
+        private readonly IImageService _imageService;
 
-        public SearchService(IProductRepository productRepository, IShopRepository shopRepository)
+        public SearchService(IProductRepository productRepository, IShopRepository shopRepository, IImageService imageService)
         {
             _productRepository = productRepository;
             _shopRepository = shopRepository;
+            _imageService = imageService;
         }
 
         public async Task<GlobalSearchResponseDto> SearchAsync(string query)
         {
-            // ✅ SỬA LỖI #17: Thêm kiểm tra
-            if (string.IsNullOrWhiteSpace(query))
-                return new GlobalSearchResponseDto();
+            if (string.IsNullOrWhiteSpace(query)) return new GlobalSearchResponseDto();
 
             var normalizedQuery = StringUtils.RemoveAccents(query);
-            // 1. Thực hiện tìm kiếm song song sản phẩm và cửa hàng
-            var productTask = _productRepository.SearchByNameAsync(normalizedQuery); // Gửi từ đã chuẩn hóa
-            var shopTask = _shopRepository.SearchByNameAsync(normalizedQuery); // Gửi từ đã chuẩn hóa
+            var productTask = _productRepository.SearchByNameAsync(normalizedQuery);
+            var shopTask = _shopRepository.SearchByNameAsync(normalizedQuery);
 
             await Task.WhenAll(productTask, shopTask);
 
@@ -38,30 +37,40 @@ namespace Application.Services
 
             var response = new GlobalSearchResponseDto();
 
-            // 2. Map kết quả tìm kiếm sản phẩm
-            response.Products = foundProducts.Select(p => new ProductSearchResultDto
+            response.Products = foundProducts.Select(p =>
             {
-                Id = p.Id,
-                Name = p.Name,
-                ImageUrl = p.Images?.FirstOrDefault()?.ImageUrl,
-                BasePrice = p.BasePrice,
-                ShopName = p.Shop.Name // Lấy tên shop từ đối tượng Shop đã Include
+                // Lấy ảnh đầu tiên trong list
+                var firstImg = p.Images?.FirstOrDefault();
+                return new ProductSearchResultDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    // SỬA LỖI IMAGE URL
+                    ImageUrl = firstImg != null ? _imageService.ToBase64(firstImg.ImageData, firstImg.ImageMimeType) : null,
+                    BasePrice = p.BasePrice,
+                    ShopName = p.Shop.Name
+                };
             }).ToList();
 
-            // 3. Map kết quả tìm kiếm cửa hàng
             response.Shops = foundShops.Select(s => new ShopSearchResultDto
             {
                 Id = s.Id,
                 Name = s.Name,
-                ImageUrl = s.ImageUrl,
-                // Map các sản phẩm nổi bật đã được tải kèm
-                PopularProducts = s.Products.Select(p => new ProductSearchResultDto
+                // SỬA LỖI SHOP IMAGE URL
+                ImageUrl = _imageService.ToBase64(s.AvatarData, s.AvatarMimeType),
+
+                PopularProducts = s.Products.Select(p =>
                 {
-                    Id = p.Id,
-                    Name = p.Name,
-                    ImageUrl = p.Images?.FirstOrDefault()?.ImageUrl,
-                    BasePrice = p.BasePrice,
-                    ShopName = s.Name
+                    var pImg = p.Images?.FirstOrDefault();
+                    return new ProductSearchResultDto
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        // SỬA LỖI IMAGE URL
+                        ImageUrl = pImg != null ? _imageService.ToBase64(pImg.ImageData, pImg.ImageMimeType) : null,
+                        BasePrice = p.BasePrice,
+                        ShopName = s.Name
+                    };
                 }).ToList()
             }).ToList();
 

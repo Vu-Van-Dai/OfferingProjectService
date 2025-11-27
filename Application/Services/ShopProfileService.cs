@@ -25,7 +25,16 @@ namespace Application.Services
         {
             var shop = await _shopRepository.GetByOwnerUserIdAsync(userId);
             if (shop == null) return null;
-            return MapToDto(shop);
+
+            return new ShopProfileResponseDto
+            {
+                Id = shop.Id,
+                Name = shop.Name,
+                Description = shop.Description,
+                ContactPhoneNumber = shop.ContactPhoneNumber,
+                JoinDate = shop.JoinDate,
+                AvatarBase64 = _imageService.ToBase64(shop.AvatarData, shop.AvatarMimeType)
+            };
         }
 
         public async Task<bool> UpdateShopProfileAsync(Guid userId, UpdateShopProfileDto dto)
@@ -33,36 +42,39 @@ namespace Application.Services
             var shop = await _shopRepository.GetByOwnerUserIdAsync(userId);
             if (shop == null) return false;
 
-            string? newImageUrl = shop.ImageUrl; // Giữ ảnh cũ mặc định
-
-            // Kiểm tra file upload hợp lệ
-            if (dto.ImageFile != null && dto.ImageFile.Length > 0)
-            {
-                _imageService.DeleteImage(shop.ImageUrl); // Xóa ảnh cũ nếu có
-                newImageUrl = await _imageService.SaveImageAsync(dto.ImageFile, "shops"); // Lưu ảnh mới
-            }
-            // Không có else if cho dto.ImageUrl vì chúng ta ưu tiên file
-
-            // Cập nhật thông tin shop
             shop.Name = dto.Name;
             shop.Description = dto.Description;
             shop.ContactPhoneNumber = dto.ContactPhoneNumber;
-            shop.ImageUrl = newImageUrl; // Cập nhật link ảnh mới (hoặc giữ link cũ)
-            shop.SearchableName = StringUtils.RemoveAccents(dto.Name); // Cập nhật tên tìm kiếm
+            shop.SearchableName = StringUtils.RemoveAccents(dto.Name);
+
+            byte[]? newData = null;
+            string? newMime = null;
+
+            if (dto.AvatarFile != null)
+            {
+                var result = await _imageService.ProcessImageAsync(dto.AvatarFile);
+                newData = result.Data;
+                newMime = result.MimeType;
+            }
+            else if (!string.IsNullOrEmpty(dto.AvatarUrl))
+            {
+                var result = await _imageService.ProcessStringImageAsync(dto.AvatarUrl);
+                if (result != null)
+                {
+                    newData = result.Value.Data;
+                    newMime = result.Value.MimeType;
+                }
+            }
+
+            if (newData != null)
+            {
+                shop.AvatarData = newData;
+                shop.AvatarMimeType = newMime;
+            }
 
             _shopRepository.Update(shop);
             await _shopRepository.SaveChangesAsync();
             return true;
         }
-
-        private ShopProfileResponseDto MapToDto(Shop shop) => new ShopProfileResponseDto
-        {
-            Id = shop.Id,
-            Name = shop.Name,
-            Description = shop.Description,
-            ImageUrl = shop.ImageUrl,
-            ContactPhoneNumber = shop.ContactPhoneNumber,
-            JoinDate = shop.JoinDate
-        };
     }
 }

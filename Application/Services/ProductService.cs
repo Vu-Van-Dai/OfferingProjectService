@@ -47,120 +47,99 @@ namespace Application.Services
             return MapToDto(product);
         }
 
-        public async Task<Product> CreateAsync(CreateProductDto productDto, Guid userId)
+        public async Task<Product> CreateAsync(CreateProductDto dto, Guid userId)
         {
             var user = await _userRepository.GetByIdAsync(userId);
             if (user?.Shop == null)
-                throw new UnauthorizedAccessException("Người dùng này không sở hữu cửa hàng nào.");
+                throw new UnauthorizedAccessException("Người dùng không có Shop.");
 
-            string? specificationsJson = null;
-            if (productDto.Specifications != null && productDto.Specifications.Any())
+            var product = new Product
             {
-                specificationsJson = JsonSerializer.Serialize(productDto.Specifications);
-            }
-
-            var newProduct = new Product
-            {
-                Name = productDto.Name,
-                SearchableName = StringUtils.RemoveAccents(productDto.Name),
-                Description = productDto.Description,
-                Features = productDto.Features,
-                IsPopular = productDto.IsPopular,
-                BasePrice = productDto.BasePrice,
-                MaxPrice = productDto.MaxPrice,
-                StockQuantity = productDto.StockQuantity,
-                ProductCategoryId = productDto.ProductCategoryId,
-                ShopId = (int)user.Shop.Id,
-                Images = new List<ProductImage>(),
-                Specifications = specificationsJson
+                Name = dto.Name,
+                SearchableName = StringUtils.RemoveAccents(dto.Name),
+                Description = dto.Description,
+                Features = dto.Features,
+                IsPopular = dto.IsPopular,
+                BasePrice = dto.BasePrice,
+                MaxPrice = dto.MaxPrice,
+                StockQuantity = dto.StockQuantity,
+                ProductCategoryId = dto.ProductCategoryId,
+                ShopId = user.Shop.Id,
+                Specifications = dto.Specifications != null ? JsonSerializer.Serialize(dto.Specifications) : null,
+                Images = new List<ProductImage>()
             };
 
-            if (productDto.ImageFiles != null)
+            // Xử lý ảnh
+            if (dto.ImageFiles != null)
             {
-                foreach (var file in productDto.ImageFiles)
+                foreach (var file in dto.ImageFiles)
                 {
-                    var imageUrl = await _imageService.SaveImageAsync(file, "products");
-                    if (imageUrl != null)
+                    try
                     {
-                        newProduct.Images.Add(new ProductImage { ImageUrl = imageUrl });
+                        var (data, mime) = await _imageService.ProcessImageAsync(file);
+                        product.Images.Add(new ProductImage { ImageData = data, ImageMimeType = mime });
+                    }
+                    catch (Exception ex) { _logger.LogWarning(ex, "Lỗi xử lý ảnh khi tạo sản phẩm."); }
+                }
+            }
+            if (dto.ImageUrls != null)
+            {
+                foreach (var urlStr in dto.ImageUrls)
+                {
+                    var result = await _imageService.ProcessStringImageAsync(urlStr);
+                    if (result != null)
+                    {
+                        product.Images.Add(new ProductImage
+                        {
+                            ImageData = result.Value.Data,
+                            ImageMimeType = result.Value.MimeType
+                        });
                     }
                 }
             }
-            // 2. Xử lý link URL
-            if (productDto.ImageUrls != null)
-            {
-                foreach (var url in productDto.ImageUrls.Where(u => !string.IsNullOrWhiteSpace(u)))
-                {
-                    newProduct.Images.Add(new ProductImage { ImageUrl = url });
-                }
-            }
 
-            await _productRepository.AddAsync(newProduct);
+            await _productRepository.AddAsync(product);
             await _productRepository.SaveChangesAsync();
-            return newProduct;
+            return product;
         }
-        public async Task<bool> UpdateAsync(int id, UpdateProductDto productDto, Guid userId)
+        public async Task<bool> UpdateAsync(int id, UpdateProductDto dto, Guid userId)
         {
             var user = await _userRepository.GetByIdAsync(userId);
-            var product = await _productRepository.GetByIdAsync(id); // Lấy product gốc
-            if (product == null || user?.Shop == null) return false;
-            if (product.ShopId != user.Shop.Id)
-                throw new UnauthorizedAccessException("Bạn không có quyền sửa sản phẩm này.");
+            var product = await _productRepository.GetByIdAsync(id);
 
-            string? specificationsJson = null;
-            if (productDto.Specifications != null && productDto.Specifications.Any())
+            if (product == null || user?.Shop == null || product.ShopId != user.Shop.Id)
+                return false; // Hoặc throw Exception tùy logic
+
+            // Update thông tin cơ bản
+            product.Name = dto.Name;
+            product.SearchableName = StringUtils.RemoveAccents(dto.Name);
+            product.Description = dto.Description;
+            product.Features = dto.Features;
+            product.IsPopular = dto.IsPopular;
+            product.BasePrice = dto.BasePrice;
+            product.MaxPrice = dto.MaxPrice;
+            product.StockQuantity = dto.StockQuantity;
+            product.ProductCategoryId = dto.ProductCategoryId;
+            product.Specifications = dto.Specifications != null ? JsonSerializer.Serialize(dto.Specifications) : null;
+
+            // Xử lý ảnh:
+            // 1. Giữ lại ảnh cũ nếu ID có trong KeepImageIds
+            var keepIds = dto.KeepImageIds ?? new List<int>();
+            var imagesToRemove = product.Images.Where(i => !keepIds.Contains(i.Id)).ToList();
+            foreach (var img in imagesToRemove)
             {
-                specificationsJson = JsonSerializer.Serialize(productDto.Specifications);
+                product.Images.Remove(img); // EF sẽ tự delete do cascade
             }
 
-            var existingImageUrls = productDto.ExistingImageUrls ?? new List<string>();
-
-            // 1. Xóa các ảnh cũ mà FE không gửi về trong ExistingImageUrls
-            var imagesToDelete = product.Images
-                .Where(img => !existingImageUrls.Contains(img.ImageUrl))
-                .ToList();
-
-            foreach (var img in imagesToDelete)
+            // 2. Thêm ảnh mới
+            if (dto.ImageFiles != null)
             {
-                _imageService.DeleteImage(img.ImageUrl); // Xóa file vật lý
-                product.Images.Remove(img); // Xóa khỏi collection (EF sẽ xóa khỏi DB)
-            }
-
-            // 2. Thêm file upload mới
-            if (productDto.ImageFiles != null)
-            {
-                foreach (var file in productDto.ImageFiles)
+                foreach (var file in dto.ImageFiles)
                 {
-                    var imageUrl = await _imageService.SaveImageAsync(file, "products");
-                    if (imageUrl != null)
-                    {
-                        product.Images.Add(new ProductImage { ImageUrl = imageUrl });
-                    }
+                    var (data, mime) = await _imageService.ProcessImageAsync(file);
+                    product.Images.Add(new ProductImage { ImageData = data, ImageMimeType = mime });
                 }
             }
-            // 3. Thêm URL mới (chỉ thêm nếu chưa tồn tại)
-            if (productDto.ImageUrls != null)
-            {
-                foreach (var url in productDto.ImageUrls.Where(u => !string.IsNullOrWhiteSpace(u)))
-                {
-                    if (!product.Images.Any(i => i.ImageUrl == url) && !existingImageUrls.Contains(url))
-                    {
-                        product.Images.Add(new ProductImage { ImageUrl = url });
-                    }
-                }
-            }
-
-            // Map các thuộc tính
-            product.Name = productDto.Name;
-            product.SearchableName = StringUtils.RemoveAccents(productDto.Name);
-            product.Description = productDto.Description;
-            product.Features = productDto.Features;
-            product.IsPopular = productDto.IsPopular;
-            product.BasePrice = productDto.BasePrice;
-            product.MaxPrice = productDto.MaxPrice;
-            product.StockQuantity = productDto.StockQuantity;
-            product.Specifications = specificationsJson;
-            product.ProductCategoryId = productDto.ProductCategoryId;
 
             _productRepository.Update(product);
             await _productRepository.SaveChangesAsync();
@@ -175,41 +154,22 @@ namespace Application.Services
 
         public async Task<bool> DeleteAsync(int id, Guid userId)
         {
+            // Logic delete giữ nguyên, EF Cascade sẽ tự xóa ProductImage trong DB
             var user = await _userRepository.GetByIdAsync(userId);
-            var product = await _productRepository.GetByIdAsync(id); // Lấy product gốc
-            if (product == null || user?.Shop == null) return false;
-            if (product.ShopId != user.Shop.Id)
-                throw new UnauthorizedAccessException("Bạn không có quyền xóa sản phẩm này.");
+            var product = await _productRepository.GetByIdAsync(id);
 
-            foreach (var img in product.Images)
-            {
-                _imageService.DeleteImage(img.ImageUrl);
-            }
-            ;
+            if (product == null || user?.Shop == null || product.ShopId != user.Shop.Id)
+                throw new UnauthorizedAccessException("Không có quyền xóa.");
+
             _productRepository.Delete(product);
             await _productRepository.SaveChangesAsync();
             return true;
         }
         private ProductResponseDto MapToDto(Product p)
         {
-            if (p == null) return null!;
-
-            // Giải tuần tự hóa (Deserialize) chuỗi JSON Specifications
-            Dictionary<string, string>? specificationsDict = null;
-            if (!string.IsNullOrWhiteSpace(p.Specifications))
-            {
-                try
-                {
-                    // Chuyển chuỗi JSON từ DB về lại Dictionary
-                    specificationsDict = JsonSerializer.Deserialize<Dictionary<string, string>>(p.Specifications);
-                }
-                // ✅ SỬA LỖI #15: Sửa khối catch
-                catch (JsonException ex)
-                {
-                    _logger.LogError(ex, "Invalid JSON in Product.Specifications for ProductId={ProductId}", p.Id);
-                    specificationsDict = new Dictionary<string, string>(); // Trả về dict rỗng
-                }
-            }
+            Dictionary<string, string> specs = new();
+            try { if (!string.IsNullOrEmpty(p.Specifications)) specs = JsonSerializer.Deserialize<Dictionary<string, string>>(p.Specifications) ?? new(); }
+            catch { }
 
             return new ProductResponseDto
             {
@@ -217,16 +177,21 @@ namespace Application.Services
                 Name = p.Name,
                 Description = p.Description,
                 Features = p.Features,
-                ImageUrls = p.Images?.Select(i => i.ImageUrl).ToList() ?? new List<string>(),
                 IsPopular = p.IsPopular,
                 BasePrice = p.BasePrice,
                 MaxPrice = p.MaxPrice,
                 StockQuantity = p.StockQuantity,
-                Specifications = specificationsDict, // <-- Gán Dictionary đã deserialize
+                Specifications = specs,
                 ProductCategoryId = p.ProductCategoryId,
                 ProductCategoryName = p.ProductCategory?.Name ?? "N/A",
                 ShopId = p.ShopId,
-                ShopName = p.Shop?.Name ?? "N/A"
+                ShopName = p.Shop?.Name ?? "N/A",
+                // Convert byte[] sang Base64
+                Images = p.Images?.Select(i => new ImageDto 
+                { 
+                    Id = i.Id, 
+                    Url = _imageService.ToBase64(i.ImageData, i.ImageMimeType) 
+                }).ToList() ?? new List<ImageDto>()
             };
         }
     }

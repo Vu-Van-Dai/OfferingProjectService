@@ -1,8 +1,9 @@
-﻿using Application.Interfaces;
+﻿using Application.Dtos;
+using Application.Interfaces;
+using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Application.Dtos;
 
 namespace API.Controllers
 {
@@ -12,10 +13,12 @@ namespace API.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IProfileService _profileService;
+        private readonly IImageService _imageService;
 
-        public ProfileController(IProfileService profileService)
+        public ProfileController(IProfileService profileService, IImageService imageService)
         {
             _profileService = profileService;
+            _imageService = imageService;
         }
 
         // GET: api/profile/me
@@ -27,6 +30,8 @@ namespace API.Controllers
 
             if (user == null) return NotFound();
 
+            var avatarUrl = _imageService.ToBase64(user.AvatarData, user.AvatarMimeType);
+
             // Trả về một đối tượng không chứa mật khẩu
             return Ok(new
             {
@@ -34,7 +39,7 @@ namespace API.Controllers
                 user.Email,
                 user.PhoneNumber,
                 user.Introduction,
-                user.AvatarUrl
+                AvatarUrl = avatarUrl
             });
         }
 

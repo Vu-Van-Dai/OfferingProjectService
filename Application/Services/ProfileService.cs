@@ -28,32 +28,28 @@ namespace Application.Services
         public async Task<bool> UpdateProfileAsync(Guid userId, UpdateProfileDto profileDto)
         {
             var user = await _userRepository.GetByIdAsync(userId);
-            if (user == null)
-            {
-                return false;
-            }
-            string? finalAvatarUrl = user.AvatarUrl; // Giữ ảnh cũ mặc định
-
-            string? oldAvatarUrl = user.AvatarUrl; // Lưu đường dẫn ảnh cũ để xóa sau
-
-            if (profileDto.AvatarFile != null && profileDto.AvatarFile.Length > 0)
-            {
-                // Lưu ảnh mới vào thư mục "avatars" TRƯỚC
-                var newAvatarUrl = await _imageService.SaveImageAsync(profileDto.AvatarFile, "avatars");
-
-                // Chỉ cập nhật và xóa ảnh cũ nếu lưu ảnh mới thành công
-                if (!string.IsNullOrEmpty(newAvatarUrl))
-                {
-                    finalAvatarUrl = newAvatarUrl;
-                    // Xóa ảnh cũ nếu nó tồn tại (và không phải là link mặc định)
-                    _imageService.DeleteImage(oldAvatarUrl);
-                }
-            }
+            if (user == null) return false;
 
             user.FullName = profileDto.FullName;
             user.PhoneNumber = profileDto.PhoneNumber;
             user.Introduction = profileDto.Introduction;
-            user.AvatarUrl = finalAvatarUrl;
+
+            if (profileDto.AvatarFile != null)
+            {
+                var result = await _imageService.ProcessImageAsync(profileDto.AvatarFile);
+                user.AvatarData = result.Data;
+                user.AvatarMimeType = result.MimeType;
+            }
+            // Xử lý Avatar (URL/Base64 -> byte[])
+            else if (!string.IsNullOrEmpty(profileDto.AvatarUrl))
+            {
+                var result = await _imageService.ProcessStringImageAsync(profileDto.AvatarUrl);
+                if (result != null)
+                {
+                    user.AvatarData = result.Value.Data;
+                    user.AvatarMimeType = result.Value.MimeType;
+                }
+            }
 
             await _userRepository.SaveChangesAsync();
             return true;

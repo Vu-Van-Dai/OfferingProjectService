@@ -22,6 +22,7 @@ namespace Infrastructure.Repositorie
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await _context.Products
+                .AsNoTracking() // Optimization
                 .Include(p => p.ProductCategory)
                 .Include(p => p.Shop)
                 .Include(p => p.Images)
@@ -31,6 +32,7 @@ namespace Infrastructure.Repositorie
         public async Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId)
         {
             return await _context.Products
+                .AsNoTracking() // Optimization
                 .Where(p => p.ProductCategoryId == categoryId)
                 .Include(p => p.ProductCategory)
                 .Include(p => p.Shop)
@@ -41,6 +43,7 @@ namespace Infrastructure.Repositorie
         {
             // Tải kèm Shop và Reviews khi lấy chi tiết
             return await _context.Products
+                .AsNoTracking() // Optimization
                 .Include(p => p.ProductCategory)
                 .Include(p => p.Shop)
                 .Include(p => p.Reviews)
@@ -51,6 +54,7 @@ namespace Infrastructure.Repositorie
         public async Task<IEnumerable<Product>> GetByShopIdAsync(int shopId)
         {
             return await _context.Products
+                .AsNoTracking() // Optimization
                 .Where(p => p.ShopId == shopId)
                 .Include(p => p.ProductCategory)
                 .Include(p => p.Images)
@@ -61,6 +65,7 @@ namespace Infrastructure.Repositorie
         {
             // Bây giờ chúng ta tìm trên cột SearchableName
             return await _context.Products
+                .AsNoTracking() // Optimization
                 .Where(p => p.SearchableName.Contains(normalizedQuery))
                 .Include(p => p.Shop)
                 .Include(p => p.Images)

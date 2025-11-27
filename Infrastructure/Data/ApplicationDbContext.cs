@@ -179,6 +179,25 @@ namespace Infrastructure.Data
             modelBuilder.Entity<ProductCategory>()
                 .Property(c => c.Description)
                 .HasColumnType("nvarchar(max)");
+            modelBuilder.Entity<ProductImage>(entity =>
+            {
+                entity.Property(e => e.ImageData).HasColumnType("varbinary(max)").IsRequired();
+                entity.Property(e => e.ImageMimeType).HasMaxLength(50).IsRequired();
+            });
+            modelBuilder.Entity<Shop>(entity =>
+            {
+                entity.Property(e => e.AvatarData).HasColumnType("varbinary(max)"); // Nullable
+            });
+
+            modelBuilder.Entity<AppUser>(entity =>
+            {
+                entity.Property(e => e.AvatarData).HasColumnType("varbinary(max)");
+            });
+
+            modelBuilder.Entity<ProductCategory>(entity =>
+            {
+                entity.Property(e => e.IconData).HasColumnType("varbinary(max)");
+            });
         }
     }
 }

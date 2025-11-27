@@ -52,6 +52,7 @@ builder.Services.AddScoped<IActivityLogService, ActivityLogService>();
 builder.Services.AddScoped<IAdminCategoryService, AdminCategoryService>();
 builder.Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
 builder.Services.AddScoped<IAdminConfigService, AdminConfigService>();
+builder.Services.AddHttpClient(); // Thêm dòng này để Inject HttpClient
 
 // Add services to the container.
 builder.Services.AddScoped<TokenService>();
