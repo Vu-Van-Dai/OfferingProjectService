@@ -13,11 +13,13 @@ namespace Application.Services
     {
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository; // Cần để lấy thông tin SP khi thêm
+        private readonly IImageService _imageService;
 
-        public CartService(ICartRepository cartRepository, IProductRepository productRepository)
+        public CartService(ICartRepository cartRepository, IProductRepository productRepository, IImageService imageService)
         {
             _cartRepository = cartRepository;
             _productRepository = productRepository;
+            _imageService = imageService;
         }
 
         // Hàm trợ giúp lấy hoặc tạo giỏ hàng
@@ -151,25 +153,30 @@ namespace Application.Services
         private CartResponseDto MapCartToDto(Cart cart)
         {
             var shopGroups = cart.Items
-                .GroupBy(item => item.Shop) // Nhóm theo đối tượng Shop đã Include
+                .GroupBy(item => item.Shop)
                 .Select(group => new ShopInCartDto
                 {
                     ShopId = group.Key.Id,
                     ShopName = group.Key.Name,
-                    Items = group.Select(item => new CartItemDto
+                    Items = group.Select(item => 
                     {
-                        Id = item.Id,
-                        ProductId = item.ProductId,
-                        ProductName = item.Product.Name,
-                        ImageUrl = item.Product.Images?.FirstOrDefault()?.ImageUrl ?? null,
-                        Price = item.Product.BasePrice,
-                        Quantity = item.Quantity,
-                        IsSelected = item.IsSelected
+                        var img = item.Product.Images?.FirstOrDefault();
+                        return new CartItemDto
+                        {
+                            Id = item.Id,
+                            ProductId = item.ProductId,
+                            ProductName = item.Product.Name,
+                            // SỬA LỖI TẠI ĐÂY
+                            ImageUrl = img != null ? _imageService.ToBase64(img.ImageData, img.ImageMimeType) : null,
+                            Price = item.Product.BasePrice,
+                            Quantity = item.Quantity,
+                            IsSelected = item.IsSelected
+                        };
                     }).ToList()
                 }).ToList();
 
             var totalPrice = cart.Items
-                .Where(item => item.IsSelected) // Chỉ tính tiền các món được chọn
+                .Where(item => item.IsSelected)
                 .Sum(item => item.Product.BasePrice * item.Quantity);
 
             return new CartResponseDto

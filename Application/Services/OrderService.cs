@@ -14,12 +14,14 @@ namespace Application.Services
         private readonly ICartRepository _cartRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IUserAddressRepository _addressRepository;
+        private readonly IImageService _imageService;
 
-        public OrderService(ICartRepository cartRepository, IOrderRepository orderRepository, IUserAddressRepository addressRepository)
+        public OrderService(ICartRepository cartRepository, IOrderRepository orderRepository, IUserAddressRepository addressRepository, IImageService imageService)
         {
             _cartRepository = cartRepository;
             _orderRepository = orderRepository;
             _addressRepository = addressRepository;
+            _imageService = imageService;
         }
 
         public async Task<OrderResponseDto?> CreateOrderFromCartAsync(Guid userId, CreateOrderRequestDto orderRequest)
@@ -142,18 +144,22 @@ namespace Application.Services
         {
             var orders = await _orderRepository.GetListByUserIdAsync(userId);
 
-            // Map danh sách Entity Order sang danh sách OrderHistoryDto
-            return orders.Select(o => new OrderHistoryDto
+            return orders.Select(o =>
             {
-                Id = o.Id,
-                OrderDate = o.OrderDate,
-                Status = o.Status.ToString(),
-                Total = o.Total,
-                TotalItems = o.Items.Count,
+                var firstItemProduct = o.Items.FirstOrDefault()?.ProductOrdered;
+                var firstImg = firstItemProduct?.Images.FirstOrDefault();
 
-                // Lấy thông tin tóm tắt của món hàng đầu tiên
-                PrimaryProductName = o.Items.FirstOrDefault()?.ProductOrdered.Name ?? "N/A",
-                PrimaryProductImage = o.Items.FirstOrDefault()?.ProductOrdered.Images.FirstOrDefault()?.ImageUrl
+                return new OrderHistoryDto
+                {
+                    Id = o.Id,
+                    OrderDate = o.OrderDate,
+                    Status = o.Status.ToString(),
+                    Total = o.Total,
+                    TotalItems = o.Items.Count,
+                    PrimaryProductName = firstItemProduct?.Name ?? "N/A",
+                    // SỬA LỖI TẠI ĐÂY
+                    PrimaryProductImage = firstImg != null ? _imageService.ToBase64(firstImg.ImageData, firstImg.ImageMimeType) : null
+                };
             });
         }
 
@@ -168,14 +174,19 @@ namespace Application.Services
                 Subtotal = order.Subtotal,
                 Total = order.Total,
                 ShippingAddress = order.ShippingAddress,
-                Items = order.Items.Select(oi => new OrderItemDto
+                Items = order.Items.Select(oi =>
                 {
-                    ProductId = oi.ProductId,
-                    ProductName = oi.ProductOrdered.Name,
-                    ImageUrl = oi.ProductOrdered.Images?.FirstOrDefault()?.ImageUrl,
-                    Price = oi.Price,
-                    Quantity = oi.Quantity,
-                    ShopName = oi.Shop.Name
+                    var img = oi.ProductOrdered.Images?.FirstOrDefault();
+                    return new OrderItemDto
+                    {
+                        ProductId = oi.ProductId,
+                        ProductName = oi.ProductOrdered.Name,
+                        // SỬA LỖI TẠI ĐÂY
+                        ImageUrl = img != null ? _imageService.ToBase64(img.ImageData, img.ImageMimeType) : null,
+                        Price = oi.Price,
+                        Quantity = oi.Quantity,
+                        ShopName = oi.Shop.Name
+                    };
                 }).ToList()
             };
         }

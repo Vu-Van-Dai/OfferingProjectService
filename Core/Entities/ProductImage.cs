@@ -11,10 +11,10 @@ namespace Core.Entities
     {
         public int Id { get; set; }
 
-        [Required]
-        public string ImageUrl { get; set; } = string.Empty;
+        public byte[] ImageData { get; set; } = Array.Empty<byte>(); // Lưu ảnh
 
-        // Mối quan hệ: Ảnh này thuộc về sản phẩm nào
+        [MaxLength(50)]
+        public string ImageMimeType { get; set; } = "image/jpeg"; // Lưu loại ảnh (jpg, png)
         public int ProductId { get; set; }
         public Product Product { get; set; } = null!;
     }

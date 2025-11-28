@@ -32,15 +32,13 @@ namespace Core.Entities
         // ✅ SỬA LỖI #1: Đổi ICollection thành List
         public List<string> Roles { get; set; } = new List<string>();
 
-        // Mối quan hệ: Một người dùng có thể viết nhiều đánh giá
-        // ❌ SỬA LỖI #1: Xóa dòng ShopId
-        // public int? ShopId { get; set; } 
+        public byte[]? AvatarData { get; set; }
+        [MaxLength(50)]
+        public string? AvatarMimeType { get; set; }
+
         public Shop? Shop { get; set; }
         public Cart? Cart { get; set; }
         public ICollection<ProductReview> Reviews { get; set; } = new List<ProductReview>();
         public ICollection<UserAddress> Addresses { get; set; } = new List<UserAddress>();
-        [MaxLength(500)]
-        public string? AvatarUrl { get; set; } // Đường dẫn đến ảnh đại diện
-
     }
 }

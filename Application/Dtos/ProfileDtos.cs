@@ -17,5 +17,8 @@ namespace Application.Dtos
 
         // Dùng cho upload ảnh avatar
         public IFormFile? AvatarFile { get; set; }
+
+        // [THÊM MỚI] Cho phép gửi URL/Base64 nếu không muốn gửi File
+        public string? AvatarUrl { get; set; }
     }
 }

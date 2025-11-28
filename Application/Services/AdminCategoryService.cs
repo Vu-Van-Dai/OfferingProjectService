@@ -37,14 +37,25 @@ namespace Application.Services
 
         public async Task<ProductCategory> CreateCategoryAsync(CreateCategoryDto dto)
         {
-            string? finalImageUrl = null;
+            byte[]? iconData = null;
+            string? iconMime = null;
+
+            // 1. Ưu tiên File Upload
             if (dto.ImageFile != null && dto.ImageFile.Length > 0)
             {
-                finalImageUrl = await _imageService.SaveImageAsync(dto.ImageFile, "categories");
+                var result = await _imageService.ProcessImageAsync(dto.ImageFile);
+                iconData = result.Data;
+                iconMime = result.MimeType;
             }
+            // 2. Nếu không có file, kiểm tra URL (nếu bạn thêm ImageUrl vào DTO)
             else if (!string.IsNullOrWhiteSpace(dto.ImageUrl))
             {
-                finalImageUrl = dto.ImageUrl;
+                var result = await _imageService.ProcessStringImageAsync(dto.ImageUrl);
+                if (result != null)
+                {
+                    iconData = result.Value.Data;
+                    iconMime = result.Value.MimeType;
+                }
             }
 
             var newCategory = new ProductCategory
@@ -52,15 +63,17 @@ namespace Application.Services
                 Name = dto.Name,
                 BannerTitle = dto.BannerTitle,
                 Description = dto.Description,
-                ImageUrl = finalImageUrl,
+                // Lưu byte[]
+                IconData = iconData,
+                IconMimeType = iconMime,
                 IsHidden = false,
-                DisplayOrder = (await _categoryRepo.GetAllAsync()).Count() // Tự động xếp cuối
+                DisplayOrder = (await _categoryRepo.GetAllAsync()).Count()
             };
 
             await _categoryRepo.AddAsync(newCategory);
             await _categoryRepo.SaveChangesAsync();
 
-            await _logService.LogAsync("Admin", "Tạo Danh Mục", $"Đã tạo danh mục mới: {dto.Name}");
+            await _logService.LogAsync("Admin", "Tạo Danh Mục", $"Đã tạo: {dto.Name}");
             return newCategory;
         }
 
@@ -69,28 +82,35 @@ namespace Application.Services
             var category = await _categoryRepo.GetByIdAsync(id);
             if (category == null) return false;
 
-            string? finalImageUrl = dto.ExistingImageUrl;
-
+            // Xử lý ảnh:
             if (dto.ImageFile != null && dto.ImageFile.Length > 0)
             {
-                _imageService.DeleteImage(category.ImageUrl);
-                finalImageUrl = await _imageService.SaveImageAsync(dto.ImageFile, "categories");
+                // Có ảnh mới -> Ghi đè
+                var result = await _imageService.ProcessImageAsync(dto.ImageFile);
+                category.IconData = result.Data;
+                category.IconMimeType = result.MimeType;
             }
             else if (!string.IsNullOrWhiteSpace(dto.ImageUrl))
             {
-                _imageService.DeleteImage(category.ImageUrl);
-                finalImageUrl = dto.ImageUrl;
+                // Có URL mới -> Tải và ghi đè
+                var result = await _imageService.ProcessStringImageAsync(dto.ImageUrl);
+                if (result != null)
+                {
+                    category.IconData = result.Value.Data;
+                    category.IconMimeType = result.Value.MimeType;
+                }
             }
+            // Lưu ý: Nếu không gửi gì cả thì GIỮ NGUYÊN ảnh cũ (không xóa).
+            // Nếu muốn xóa ảnh, cần thêm 1 trường cờ (flag) từ FE gửi lên.
 
             category.Name = dto.Name;
             category.BannerTitle = dto.BannerTitle;
             category.Description = dto.Description;
-            category.ImageUrl = finalImageUrl;
 
             _categoryRepo.Update(category);
             await _categoryRepo.SaveChangesAsync();
 
-            await _logService.LogAsync("Admin", "Sửa Danh Mục", $"Đã sửa danh mục ID: {id}");
+            await _logService.LogAsync("Admin", "Sửa Danh Mục", $"Đã sửa ID: {id}");
             return true;
         }
 
@@ -99,13 +119,10 @@ namespace Application.Services
             var category = await _categoryRepo.GetByIdAsync(id);
             if (category == null) return false;
 
-            // Cân nhắc: Chỉ nên cho xóa nếu không có sản phẩm nào
-            // if (category.Products.Any()) return false; 
-
             _categoryRepo.Delete(category);
-            await _categoryRepo.SaveChangesAsync();
+            await _categoryRepo.SaveChangesAsync(); // Ảnh trong DB sẽ tự mất cùng dòng dữ liệu
 
-            await _logService.LogAsync("Admin", "Xóa Danh Mục", $"Đã xóa danh mục: {category.Name} (ID: {id})");
+            await _logService.LogAsync("Admin", "Xóa Danh Mục", $"Đã xóa: {category.Name}");
             return true;
         }
 
