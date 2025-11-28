@@ -131,7 +131,7 @@ namespace Infrastructure.Data
                             Images = new List<ProductImage>
                             {
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/541379662_1197433269075201_5707430402474025215_n.jpg?stp=c0.47.1299.1299a_cp6_dst-jpg_s206x206_tt6&_nc_cat=102&ccb=1-7&_nc_sid=50ad20&_nc_eui2=AeEqzViROL76davPgF53ZBogY31Co_mapvFjfUKj-Zqm8WRhMRO9zXk061XsPiZ3_15dHhCece_YWKrjDEWvXK5A&_nc_ohc=uviOn-MFL_gQ7kNvwF6hGzY&_nc_oc=AdmU5bfA5SvacY_8zOenBogssMqQBWIruFYdBplaAMu9qwnp71APxUjTZ97Zbz_Mrz4&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=yZJ0UNwiKf8lAvK1WuKqNw&oh=00_AfewNq-l4kqT4-Mw5cnS-v1NObdjynt7e2K2AmHQIRvO3Q&oe=6908AA74"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/541025231_1197433199075208_6392725115706814321_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGzI1pm1fRE4qJLdVgbo0DTnHjFuHDp3z2ceMW4cOnfPS3Gu3oHlMtWe53cPonq7tyEq3OAYR-RRb-y1OchhS5W&_nc_ohc=2gwuwaJE0RQQ7kNvwFHfa7k&_nc_oc=AdmwaZpDUJeV4v2pJiVqPPsJshfmjnzrsX_URsoS6-snIEByO0IZ75SepjBcw1ZUhbmSo_QGOXHGp23A7GdXVwdr&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=sPRQFMZjuaQiIKuPLtiSNg&oh=00_Afg5ouCq2E-f5oJz-QySKDSCUvRCF0uFif0ex2yS7CCV9Q&oe=692E3212"),
                                     ImageMimeType = "image/jpeg"
                                 },
                             },
@@ -154,7 +154,7 @@ namespace Infrastructure.Data
                             Images = new List<ProductImage>
                             {
                                 new ProductImage  { 
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/487240548_1075089671309562_21478582763857565_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHmwrMnDxh4TNuPg9s9hdVITSZ3oifAXvFNJneiJ8Be8bqSFh8dOk0D8I5rCcleWBCWG5dgBTRbb0jwULhTvIiP&_nc_ohc=RRq_s9Bq_YoQ7kNvwHgc7Ce&_nc_oc=Admt5yavZ82673PEy7Ndrv-52N32H5ckvfdBl_quoebqUB5ZtRsy7pPl9Lhi1IWOYn4&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=xUPpO3Kq1ZWyQYhYj42x3Q&oh=00_AfeMvmityO0Gmbg6-v1_LZuK51ioSvTTC9XATqUHAWCwqQ&oe=6908CB9F"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-6/488590584_1079531694198693_8674482424017446483_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFaiU6Q56yBiyBHPmZEoFHcZbXv0xu21tplte_TG7bW2nZESoYmUb993tmvooyqUalE1d-IU03ftLSqNFFPeL0C&_nc_ohc=eaBrOOQRQyUQ7kNvwENx88w&_nc_oc=AdlEWKQgbIV5gaIuZf0UUzifNT7H2awZg_nB6ewx33khBlu9Y7u1-uySV49U3LV78h7Mmlu99Q7L-z_jeT1Yz-WJ&_nc_zt=23&_nc_ht=scontent.fsgn2-9.fna&_nc_gid=8ohz8-Q-kFDtS69wuXzS3w&oh=00_AfgRvxXP21YeZkx2Eg3PZKbztST8cXKih6I_dv8p4qHw7A&oe=692E16B2"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -176,7 +176,7 @@ namespace Infrastructure.Data
                             Features = "Nhân đậu xanh mịn màng, vị ngọt béo bùi. ; Dẻo thơm, đóng gói tiện lợi cho cúng lễ hoặc tiệc nhỏ.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/496227044_1106968004788395_3014107575339475341_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGVgjWVYaYLZIy1b-N9cadhq8kfs4DFzsmryR-zgMXOyasUoSXEf-pei37abwRC0N8mEolnnPRXtualswPvqZmL&_nc_ohc=-xy4Phq3F4UQ7kNvwFgvtI3&_nc_oc=AdkPp7AQPlmwttn8oDI4HFbc-7b97OFGLI5ioggBFlew9QhTSkEuvPA8Tc1uAfRpid4&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=hGTw_-E82x8KLfdAAmTxIg&oh=00_AffQv6aAIuxXeoKJwy8J4uQ4XttRP3nSShsc2F1gh1rCHg&oe=69089E9E"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/558740521_1230062299145631_7503797338123846275_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF7J3v5K_IPKqSw-ze-gtVtginWs9oWmkSCKdaz2haaRP7sfuDQi0VvrRCDoxx1MxgApiiOY7F5DO_tJ0rJ7xxj&_nc_ohc=7uOk6B7Rg34Q7kNvwHc986D&_nc_oc=AdmE_nfQ5HjhPIfRadHGtKacxWfmxOzAe0sCitsF3dQiOXvfKeMJgpAo70rz9AmVQEE9H3DXG_IjixfX6VpTVgRc&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=4jylqKTeyCOfQs1OE_BPlA&oh=00_AfjGwTvBe1qBihktAwblEuJ4ZA90BjJNr6G8xBOgwl4CIw&oe=692E243B"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -198,7 +198,7 @@ namespace Infrastructure.Data
                             Features = "Mát lạnh, ngọt dịu, dùng tốt cho mùa hè hoặc lễ cúng chay.; Đóng hũ nhỏ gọn, dễ bảo quản.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/555565502_1220384953446699_3145249367105095901_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHkjVhWT5pU8vwbwFj-Q08WFfqqLJzB0RkV-qosnMHRGZWkHjd4gpMhgvHLc3x-nsMZYU_ghirUakOdrsLWMzFA&_nc_ohc=Il1mv_nIUxwQ7kNvwF6nW3l&_nc_oc=AdlKnd-EPqyVJf0ZmnKpfKPh8sI-lgwVZqPqHQ00YmyxlA6Ahwsw0pUn_i2Ie8tOlQM&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=vmsxcgP5bZbtDqPdMuVl-Q&oh=00_AfdMLhslzizcrq6XihPiN46IIe9RqLmsFaF0e7tZ_Eohpg&oe=69089F39"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/555565502_1220384953446699_3145249367105095901_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHkjVhWT5pU8vwbwFj-Q08WFfqqLJzB0RkV-qosnMHRGZWkHjd4gpMhgvHLc3x-nsMZYU_ghirUakOdrsLWMzFA&_nc_ohc=7BHzlIVdrSQQ7kNvwEumQe0&_nc_oc=AdnlVgsCn0lrI7goYU3iSWvYIUuKiNSdgjzQfzsk11F1XbOrwe6IfbhVgn-csZHBO4u6YW_pzMeLq4OgE-Dl6I9V&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=Mvf188G6yYOcARzp09kISQ&oh=00_AfioXBbu_LtqRE6B8bNuBWiENSry8ckRTG5ZxBEcPz6E3g&oe=692E31F9"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -219,7 +219,7 @@ namespace Infrastructure.Data
                             Features = "Mặt sên đậu được trang trí tinh tế, thể hiện sự sung túc và đủ đầy. ; Set 13 hộp nhỏ tiện dụng cho mâm cúng đầy tháng, thôi nôi.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/485405049_1065738365578026_1796382996166533552_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFID6ZCd48Gkz5j6MbeMDrwltcYxIM-OM6W1xjEgz44znVOkLQUYCDhtNdyi_sldNMYNTzulWJfcYmSoe818DUT&_nc_ohc=ZJpTmYvqglsQ7kNvwEb7H_e&_nc_oc=Adn6rhK6H7JXBSe71Y3quqBOFKM-IxWEmizXTppZUW_78r5jc4cA58Hc9rcVyVL5gcY&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=c3ifc1hYwchlUbv_virz9w&oh=00_AffmYMR7R2xq4zwo_A_S2yFvB-xYRLiWLG2ZTjL7XhvGbA&oe=6908A027"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/558111759_1220384900113371_5687351138875825458_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEAEps398XbwkgiBr9GxDbp5XtZxl2dRgPle1nGXZ1GA1xK1m1Sw-VqA58hnXCuycLb7_kH4or14s8O8S5qhopv&_nc_ohc=PVCC8pEDoW0Q7kNvwGeTodS&_nc_oc=AdkIYdjdTxTpJ3i3HQCntse0_N6Loz8ckZSCLn653s13Bvy4WQKRdPcHpvi_LnYCSg9QdksSzpCB4gePkpWRqu2L&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=iQ_mY7ccOUh-dVXKV06vdg&oh=00_AfjAIioDO5H4Cy9bw7vXcoEGzFHUwPcjjSPfIKn3NgoxNA&oe=692E2CC7"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -240,7 +240,7 @@ namespace Infrastructure.Data
                             Features = "Màu đỏ tươi từ gấc kết hợp đậu xanh, vị ngọt thơm, mềm dẻo. ; Trang trí chữ “Song Hỷ” tinh xảo.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-6/481253183_1053380573480472_5949951960261771440_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFRuT4nT3ve6GhZba1MYnhV-eWDm7C9s5b55YObsL2zloYIJVpkQTM5OYO4WjwcWdKmVzBSN8yF2umTHzjL_IMn&_nc_ohc=c8BiPlGyaJwQ7kNvwEed3MB&_nc_oc=AdlKYyPWU0HRQat3h2FB-rgSCwOtfN7jI_aJwxE_zr3hkYbUV3NIGIIvxLnKNpJ8C7I&_nc_zt=23&_nc_ht=scontent.fsgn2-3.fna&_nc_gid=vsUxzv-eDeyHQ1agjqJ--g&oh=00_Afcb7M8Jm-n33QdK-0RcoRDSwIKgCIYPHmzVjgELrF3v2A&oe=6908B1D6"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-6/481253183_1053380573480472_5949951960261771440_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFRuT4nT3ve6GhZba1MYnhV-eWDm7C9s5b55YObsL2zloYIJVpkQTM5OYO4WjwcWdKmVzBSN8yF2umTHzjL_IMn&_nc_ohc=hA0dhfrvrDgQ7kNvwEb5Xiv&_nc_oc=Adk0h-GW6sMvOlvRlFm3GmTp-L16yQeoZkk5G8EJfofXHeoVuJZbiXcIgs6GeHvFTbF18v_4AKB8Rp4WmkUlwO0E&_nc_zt=23&_nc_ht=scontent.fsgn2-3.fna&_nc_gid=bhBs8r2CjihY99tQEv6Afw&oh=00_AfjwmCGRwqmnI9JGMuA6wG2udnHpfOfCbcVZ6dVKD4AeSA&oe=692E4496"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -261,15 +261,15 @@ namespace Infrastructure.Data
                             Features = "Nhân đậu xanh ngọt béo, nước gừng ấm lòng. ; Phù hợp cho lễ cúng ông bà, lễ đầy tháng, thôi nôi.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-5.fna.fbcdn.net/v/t39.30808-6/483676793_1060890702729459_540921206818477320_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEiBysK0rAlzml3FPx-RzSHqP2_lA26qPuo_b-UDbqo-8k8AbfZjF1SqJ4UafH6pvIxIakesOGITv_DtzV0w_AV&_nc_ohc=TomRwVuSj4sQ7kNvwFnLsr-&_nc_oc=AdmRy_czG7Tyr8xjxPZX56DWt5Gw5_A8QasMKoesWeK1YSC02_w4Swnv5gptG6oqF-0&_nc_zt=23&_nc_ht=scontent.fsgn2-5.fna&_nc_gid=ic-FUqFjsh7L8rBvepFwGQ&oh=00_Afd-timBC1_T-NL2NB65SEd8JnOSOZnLfYOd5FWRSoaMIg&oe=6908C421"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/484085675_1061780935973769_3019805590600455720_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeG7DT7C_la6V273BpPUKPJe-i14Mqb2Dkr6LXgypvYOSjeZFkR9h01LMXKBVL22E3902KsqrR8ay9CJqYE5rkv-&_nc_ohc=dLNQo-tXcN8Q7kNvwF_hBdZ&_nc_oc=AdnBZjMGCNN80p2zYuKIQApqSMU6ttbkgHHI-ZejOQlrsTG9J1uDmfS0ByUhr3uf1RSWUjDRxMhUniqZdLlkN5YV&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=h9LZrXlclddjKtedopL5pA&oh=00_AfinDBgNUPTa6rGPsq_dhASvbrBFvNPrR3jb4AeAsoCMKA&oe=692E2332"),
                                     ImageMimeType = "image/jpeg"
                                 },
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fdad3-1.fna.fbcdn.net/v/t39.30808-6/488710767_1079528010865728_1544369605902230390_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGpRnSvCUwGhthy763OHG1M_qnOOGnSRRn-qc44adJFGdJRWW_nqk1DCImpypDrtLkJUxBF_r26QJ7cYi_0ChcX&_nc_ohc=i-FkDoBQgcAQ7kNvwG3RPVD&_nc_oc=AdkbU-P6Uk5zvcDhwfqSP62gSEinae9Tgl4hSseArA4aGMwD9KfalMe6r9yfnWb-8To&_nc_zt=23&_nc_ht=scontent.fdad3-1.fna&_nc_gid=Knr3uYYc2hfadHFMsz0wOw&oh=00_Afe3g_exF8YO9Ia9jrjPGZsGVc2OUoqFsp1eDIgfatv1tQ&oe=690ACC95"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/484182317_1061781252640404_5570031133217398354_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEqa1nuwcj1elmw8HDqmv82iCnG8zzIGtmIKcbzPMga2X7g0GnjNeUbkQaYvMXwXcVNRYu5kCi164hB7DQMoABr&_nc_ohc=maivzhzyVTAQ7kNvwFpfW-3&_nc_oc=AdktL5sNznq5hSkj0RPF1dyKk9ZpCb5bYRkikjeyAq0KV7yEDJakG9_D1TJj5GsLNzFq6TAaatdtBwr-Gu06FzmQ&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=zTxM1Gao8zaVLnMSMUYzVA&oh=00_AfhaYM6NA5nKEizeIA0ydvYe-gcGK2z0s2LWkCtNgat1aQ&oe=692E11AF"),
                                     ImageMimeType = "image/jpeg"
                                 },
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fdad3-5.fna.fbcdn.net/v/t39.30808-6/485768659_1069212518563944_2335930251528614192_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFA-U4NKJyQakrbnGYtWAogBV6s0QO2_jEFXqzRA7b-MXebdcWXsjuI87g4NyY1WQBb-anUwx_rR8MdTVSsaeXU&_nc_ohc=cHhhfO22Ie8Q7kNvwEnsJhg&_nc_oc=AdlgogA27D-70GPOXNFiXJtkqRyvd7rV1XyZCtq9grr1v31C1854FGuTwz1w-mKMpJE&_nc_zt=23&_nc_ht=scontent.fdad3-5.fna&_nc_gid=UyyUjwb2mKy2pK134Pd5PQ&oh=00_AfePunaBJW3pOvBL7NM7_wa79XKCXtnUJG5k9SlneyyrJA&oe=690AB688"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-10.fna.fbcdn.net/v/t39.30808-6/485768227_1067258108759385_8302690779145725396_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEsjejALgrMN_YFOkvJizMFEr3pk5FQpgoSvemTkVCmCr-ijlwKr8xQuvV9dtyifOWGUJvqpowy-CrBphgxV5qW&_nc_ohc=_H9_dQPtkZEQ7kNvwHmtkWf&_nc_oc=AdngfuDNLq0j30bxEbyhIBF-0nF_0i0ygXD7XfDI1uJ3Fm2iR7d6d6TLIb4_2-vvUM8VWcaXkOgrm4MY5cCFftNG&_nc_zt=23&_nc_ht=scontent.fsgn2-10.fna&_nc_gid=HtMnfGFu4jWaP79-8aIe7g&oh=00_AfiJ617z03bjM0iDAn3GrjvGGLR219cAKHzksaSyRhMFrg&oe=692E16E6"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -291,7 +291,7 @@ namespace Infrastructure.Data
                             Features = "Dẻo mềm, hương vị truyền thống, phù hợp lễ khai trương – cúng đầu năm.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-6/469533049_1085514669730491_5139790982711780290_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEFhT5O-B0WEZY7ox-UpLA4CbfaankLjN8Jt9pqeQuM32bSVPyLEpXWMkPyV3HSjbsx0pNewQqTaDdWEdMzPC0Q&_nc_ohc=fJGRLfJoiYkQ7kNvwHd1GqO&_nc_oc=AdmrlpYNDI9oWJHTJRHEdskUi5W_TTEYVXui7o8uhqEasE-r6PcOIbxJ0L25swYpBII&_nc_zt=23&_nc_ht=scontent.fsgn2-3.fna&_nc_gid=G371dBWwwwDMwk5UNTb7rw&oh=00_AfdzgXDduWXmpV1yAdovMRlSQDewnvZkO8uYLxccUj3kdQ&oe=690899DA"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/541379662_1197433269075201_5707430402474025215_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEqzViROL76davPgF53ZBogY31Co_mapvFjfUKj-Zqm8WRhMRO9zXk061XsPiZ3_15dHhCece_YWKrjDEWvXK5A&_nc_ohc=tvk4I_3f3wQQ7kNvwG2k3gr&_nc_oc=AdlumQaDKxT7nRlDMZlhk6A-PEqdcrbsJ7AMv0UwdqmTq2Piav3QXiGsqk3TQQkoX9j-hWpABlZO4s3JVUpv4yza&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=euXRWX8yZ5Yv6kEZoplKeA&oh=00_Afj8gZjKE9ZXvGtOlZJGU4x6Ge0T74EO1NEwi3qNfz46EQ&oe=692E3D34"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -313,7 +313,7 @@ namespace Infrastructure.Data
                             Features = "Được bày trí trên mẹt tre truyền thống, trang trọng và tiện lợi. ; Thích hợp cho cúng Thần Tài – cầu tài lộc, bình an.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-6/556875537_1220384980113363_8758857578471060149_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHo2AS1nnhbAAUiZd1z7rox7QkoIwgcrL7tCSgjCBysvshurFzZE4s3QnD8ZFFAJ1Nlv8PIfDVK6bAbRov7mLgW&_nc_ohc=Z1JdRHvKQJ8Q7kNvwFaFOKH&_nc_oc=AdlQ1bPiX57P84Kuz_S_JuPIn-XEpaVOvOyAZyVWokLpzlC7Wqa7PUeoNjDbEz6z0JA&_nc_zt=23&_nc_ht=scontent.fsgn2-3.fna&_nc_gid=q4u_PjYFKy11S69qYQIDZg&oh=00_AfcO91ic5LQXn8msZrTcNGc3gxPZWIdDVkuKtGWo-epruQ&oe=6908C7E8"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-10.fna.fbcdn.net/v/t39.30808-6/485362299_1068762915275571_106238200387156073_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHG3mTGM6b6I92HxZa2HQ7F2ppRWpH-aXPamlFakf5pcz_w_oy8FIc4n_NetoMjYwiXxXiAbcvtTbDNHnM0hJvm&_nc_ohc=pKpyfKFOQToQ7kNvwFyZTBC&_nc_oc=AdlHI4VKYbXZDSNK8llSyn_Vddaz51igpJxspUJoY7LKaMbRw-nLgdgqgGXL8xzchPdGpeKJI9JqCWET0Y2NmANY&_nc_zt=23&_nc_ht=scontent.fsgn2-10.fna&_nc_gid=m0DO9tcmFnNexSNqpPf1sg&oh=00_AfhObtPsPvqB_iFlSuY9sH-kj1eQnfgHA5vABTX0E0Ee3g&oe=692E3F50"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -334,7 +334,7 @@ namespace Infrastructure.Data
                             Features = "Heo quay giòn da, thơm ngon – tượng trưng cho sung túc và phát đạt. ; Dành cho lễ cúng Thần Tài – Thổ Địa.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-5.fna.fbcdn.net/v/t39.30808-6/558446411_1220384973446697_3422695995249162276_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeG6zM0FTS4RWhdgAmDavwBoE2HVD-61bfcTYdUP7rVt9_7lcPqSXXsVZlRczmmFnICopfa64XbZXBiRRlDwrdhW&_nc_ohc=dGnZDi0tG4wQ7kNvwExFKO5&_nc_oc=AdngaHbMq81G6PlCvSaemMhUaZsKieT7MQL1fW2y09-bp_t_4Z9yQxgEcm1112i1j5Q&_nc_zt=23&_nc_ht=scontent.fsgn2-5.fna&_nc_gid=fOO8LZ4HvVhIAYEKXnIZfg&oh=00_Afe6PFbuSZiA_78MDUgbaZrJUA1kxe-pjaX3fjeNYTG9oA&oe=6908A556"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-6/484347151_1060974182721111_56654645468955225_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeH4QNseUQr2O0Xv6gnad3fOQ-HJIL5aBjlD4ckgvloGOeF-SfmXN-ukKiE8SZhL6EOi2YMku8Zxq8mixxJxppqF&_nc_ohc=NMVsJStVIl0Q7kNvwE1PaQY&_nc_oc=Adnh8086iwlquv9k9vufMEP1K1lzKZwuRbRfDsUYFdyOjJ8WAA2ZEb-kDFn9-jAWWMqzorNplZbLcxKWDgt-EuK4&_nc_zt=23&_nc_ht=scontent.fsgn2-9.fna&_nc_gid=NoEp1lGBDAxfcZbbJ072vw&oh=00_AfgtsRg-ZKhvLP_jrZlB59GbptYEfxS9-4Aez19OcEFFMQ&oe=692E4056"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -355,7 +355,7 @@ namespace Infrastructure.Data
                             Features = "Chim cút tượng trưng cho phúc lộc và sức khỏe. ; Dùng trong lễ cúng khai trương, thần tài, Tết cổ truyền.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-6/486314003_1071239368361259_1454308254779610938_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGghPf1bk8uyUe9sDXx-FJm_VbKKG16ASX9VsoobXoBJQ9Ao_WgXnN65h1BuSkD-vy6SGHkwkE9p_DJlwJAXJnQ&_nc_ohc=pH_F6mQuCCUQ7kNvwECVa-m&_nc_oc=AdkP1IwRbhjuXKlXRqUxerc24hkWOvbfvtCMTHhk9E59FwpT5H6m5uPySl1_NzospGo&_nc_zt=23&_nc_ht=scontent.fsgn2-9.fna&_nc_gid=qmBEiHh9UuuWJtdj4WhD-g&oh=00_AfeJkpLivr-gS4RG69_VgvEe4c0lDGgAf5QYd21_YzX41g&oe=6908CB02"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/486662995_1070807368404459_2726330577518962922_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFtCvTtF2Y_apeX4SevHaEJ5zaAJM3LoarnNoAkzcuhqgTcPuba19gNnCMYYp_GUqvtXV7lkTh4uLt5N8P7sGUl&_nc_ohc=M5XmH_TCrBkQ7kNvwEnfB7I&_nc_oc=AdnTpM15RCe6uL2_9Eo-57ytF3GwDayQlh6UmLB4CutKT-SpEOOcj4JbqzBLXe0hv3HHcIXgEq4m-uxWtgWxrXE0&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=MABQ4sy5j3PrZBrqw6xVgw&oh=00_Afj4Hrdxh18toy0JOy3EM3mM_kGY0YM9BYiRHnkArlqdwg&oe=692E1385"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -376,7 +376,7 @@ namespace Infrastructure.Data
                             Features = "Vị ngọt thanh, màu sắc tươi sáng, phù hợp cúng lễ đầu năm – thi cử.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/485843465_1068761881942341_6708689625131368850_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeH810Qyef4ueZ0YE0mSfxkyu2G-F5ksUR67Yb4XmSxRHmruKk1rdhms2Tp76WUixQWRvTPj7ZqkZok1jieZXVEI&_nc_ohc=DN29CAp2tcUQ7kNvwEKDaxg&_nc_oc=AdmE2vWTl2EpEKcGBSahB1MPqs3h0l5o-VjI20yOPfPpUg9gJWBKxRv2CKlpXxlJI_c&_nc_zt=23&_nc_ht=scontent.fsgn2-4.fna&_nc_gid=JY9_W5TQdifpgMARpTqX1w&oh=00_AffuhldcbewJK9ra14_XLTlyrb53_vJvOaii52tdkyCCPQ&oe=6908BC2A"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-4.fna.fbcdn.net/v/t39.30808-6/486112077_1068761968608999_3692188912100259715_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGmDm26r-bf2NNjwuDvLnsn1hyZDvcyJUvWHJkO9zIlS-f_Zd9VHzeI4K7yJIRA8JlJUx8mNYdpfnJm2Gc0nmAV&_nc_ohc=zx3aTKczRfIQ7kNvwGZO9Su&_nc_oc=Adnde1rGDkA05dmMNMfsSM_DSas1ZcP0porkPXYjUrdJVw4_i33eRd8Qsxuhs3I5cYu47cu0HCuLWzv9h7-URO0W&_nc_zt=23&_nc_ht=scontent.fsgn2-4.fna&_nc_gid=zyVOy-B87beWyz7exZ6EPQ&oh=00_AfhIzN3CNb67PRHXyr-5MnDASxbOqyBewWOeleIDYwSHRw&oe=692E1B94"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -387,34 +387,12 @@ namespace Infrastructure.Data
                             ShopId = shop.Id
                         },
                         new Product {
-                            Name = "Xôi gấc hoa lá sen",
-                            Description = "Tạo hình hoa sen tinh tế, ý nghĩa thanh khiết – phúc lành.",
-                            Features = "Màu đỏ gấc rực rỡ, tượng trưng cho hạnh phúc và tài lộc.",
-                            Images = new List<ProductImage>{
-                                new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-6/485148561_1069212295230633_2437587401656087306_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFVA_PX3bqsbvicicRKyxpdihDsLH_mHHuKEOwsf-Yce_8nJPx27wGVDzW_h5s_ZZoCJrRDmejHmWVq_lQzN-gG&_nc_ohc=RvpLKnro1VcQ7kNvwFKzHRI&_nc_oc=Adn-DYjrDB8IcaNdHnOe3fEkmzjQt4fTg5K_MVdtXJh_uvbIsYEY_j7rhLmGz8OTpRo&_nc_zt=23&_nc_ht=scontent.fsgn2-3.fna&_nc_gid=_nNEfO3w8HVj90vIct_vyg&oh=00_AfcZjpzAe8XuD4yzfqogb6u7SzggmPvm3T3H8GDNOuCAuw&oe=6908B34A"),
-                                    ImageMimeType = "image/jpeg"
-                                }
-                            },
-                            BasePrice = 35000,
-                            Specifications = JsonSerializer.Serialize(new Dictionary<string, string>
-                            {
-                                { "Xuất xứ:", "Việt Nam" },
-                                { "Bảo quản:", "nơi khô ráo, thoáng mát" },
-                                { "HSD:", "1-2 ngày" },
-                                { "Trọng lượng:", "300g" }
-                            }),
-                            StockQuantity=100,
-                            ProductCategoryId = xoiCheCategory.Id,
-                            ShopId = shop.Id
-                        },
-                        new Product {
                             Name = "Rau câu chữ Lộc",
                             Description = "Tạo hình chữ “Lộc” – cầu may mắn, tài lộc và thịnh vượng.",
                             Features = "Màu sắc đẹp mắt, vị ngọt thanh mát. ; Phù hợp cúng Tết, khai trương, lễ đầu năm.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-6/487200728_1075092294642633_5422837502837129113_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHUoC62YwpV0TyQ1ZJwfjnSZ5nh3mhDWCNnmeHeaENYIzjuTRuL1lG2zplBA2F2jGtXr4UXryk8gOx1ENS07-Qk&_nc_ohc=N6BNRdnTEqEQ7kNvwF923Th&_nc_oc=Adk8V29Sf5JgdCvmhycbdFQ43O2JNXTE5knUcW6q6M49li08H6u4HiONGfv-kOL7AqA&_nc_zt=23&_nc_ht=scontent.fsgn2-3.fna&_nc_gid=DdM47XLaG4pIk7lEujs89A&oh=00_AffN77xiCe-22Ypjw1wniP62JpEUVT_01jqyuNljbxHNhQ&oe=6908C0AC"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-6/469482275_1084987819783176_8215204856689061368_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFcUiPvGkL8koNI7jhm3CzQu_RMfzMQTqC79Ex_MxBOoK9xtcCkXmddBxuLVjJR4OgzyPa3VD6JTqoIoZVbF7a9&_nc_ohc=txFA51mPCWMQ7kNvwG5HFYi&_nc_oc=AdlduzYG35-j2dvOVf9eBkhbVaJ66eVD75DIGM8WyGSedDeERno8b-8X_Nwy2koyibvgHlbiBhQflwGfSg4jP0AJ&_nc_zt=23&_nc_ht=scontent.fsgn2-3.fna&_nc_gid=hfI1W2bEIufZCV3MTt8OTg&oh=00_AfjEFBfWDq2Ybt8enyhlAKQi_vZJ4zmIimWHDDapdVr8Eg&oe=692E3B18"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -430,33 +408,12 @@ namespace Infrastructure.Data
                             ShopId = shop.Id
                         },
                         new Product {
-                            Name = "Chè cốm khoai môn",
-                            Description = "Sự kết hợp hài hòa giữa cốm xanh thơm và khoai môn bùi béo.",
-                            Features = "Vị ngọt thanh, mang đậm hương vị Bắc Bộ truyền thống.",
-                            Images = new List<ProductImage>{
-                                new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/487568511_1075089154642947_2033796478254800037_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFD5Fk92JaF_eYTYzIokvlM1kzgiZmYJdnWTOCJmZgl2V1WlcSlgkEOE3H24guLj1o6lc7o0FFpQ7eIRBZ06Tdm&_nc_ohc=8kstRYU6uFcQ7kNvwG1X1l7&_nc_oc=AdkbYZNUZBM6o2GN9QF2CTw7G1SrFNpc6LH9yt-LkfZECFJy2FTQc0Lk7UhTs9D8dyA&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=LEqbrA9raIfYGmMeHNlTXA&oh=00_AfdRKsvy-c9SNOZBVqv4Zi75cDOkuT0MGkJ4vhGi58RudQ&oe=69089EF1"),
-                                    ImageMimeType = "image/jpeg"
-                                }
-                            },
-                            BasePrice = 100000,
-                            Specifications = JsonSerializer.Serialize(new Dictionary<string, string>
-                            {
-                                {"Xuất xứ:", "Việt Nam" },
-                                {"Bảo quản:", "nơi khô ráo, thoáng mát" },
-                                {"HSD:", "1-2 ngày" }
-                            }),
-                            StockQuantity=100,
-                            ProductCategoryId = xoiCheCategory.Id,
-                            ShopId = shop.Id
-                        },
-                        new Product {
                             Name = "Heo quay con 4-4,5kg",
                             Description = "Heo quay da giòn, thịt mềm thơm, màu vàng óng đẹp mắt.",
                             Features = "Là lễ vật quan trọng trong các lễ cúng lớn: khai trương, tân gia, cúng Thần Tài.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-6/484347151_1060974182721111_56654645468955225_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeH4QNseUQr2O0Xv6gnad3fOQ-HJIL5aBjlD4ckgvloGOeF-SfmXN-ukKiE8SZhL6EOi2YMku8Zxq8mixxJxppqF&_nc_ohc=5z_lRtFOAlMQ7kNvwGxY193&_nc_oc=AdlFjIFQcMGnKleUVoBEB757rBpUFPJsrFP0dFla1y7afFh2J5V6ui5ZbD0mL-q2viw&_nc_zt=23&_nc_ht=scontent.fsgn2-9.fna&_nc_gid=sNWA4I_SVy19weXT-mCQ7Q&oh=00_AfdkjjV9hW0B8E2-EdpplWn5EPqn_oQnd4vJIDpWs-Uf5Q&oe=6908AD96"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/315969821_844138713300209_7255072982214198130_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=2285d6&_nc_eui2=AeFmrz1oldvMlDWijI9fHrv0p814EHRNdYunzXgQdE11i08n9lLkXfhDjCpEZxlqxF69C_Ej7LXsYu3EuaeuCwYa&_nc_ohc=-7D6grTSx0gQ7kNvwEGQsFW&_nc_oc=Adn_GMXVC0GSgxTdBYUcwr2ugyTQ8uigaecYT8h7OgImq8egwLbqCKyr3J1XPPwaRxIYR2KPHE1RIQ-gVpE_RxMv&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=rXMic310diLGDN7O7EP8Vw&oh=00_Afh7kJTalMZU-DtC8NC37lmu7wgWXzUE1LCxSCWtaB5iIA&oe=692E2242"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -478,7 +435,7 @@ namespace Infrastructure.Data
                             Features = "Chuẩn bị trọn gói, sạch sẽ, gọn gàng, đảm bảo đúng nghi lễ truyền thống.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-10.fna.fbcdn.net/v/t39.30808-6/487957038_2518473248495827_7445081025542901339_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFI4v2KgV3LDeHYJ9RjSNuY9ioQTuHHqDz2KhBO4ceoPOItiKspNSnlbSwAHr0ltv_nhFWBDt3jKpbeGUjxRvOo&_nc_ohc=bLRqx-T5lIoQ7kNvwFGilH6&_nc_oc=Adlb-VPu4Hgky-BO2iLCUsDlUEpppkfEV6BqOk8vf3B7S1cpiqaB-WEVQzqpbJZ-9qE&_nc_zt=23&_nc_ht=scontent.fsgn2-10.fna&_nc_gid=UGC5NC-OQ8KNRrIMsgO7Hg&oh=00_Afc3Rb0HlgrdhJTMlanZX4L3TOd3lTxc7YjRLAi7LCcrSQ&oe=6908AAD8"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/546921439_1204255998392928_1577491303697229503_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeH4dFkPLMuQkwSV7v96j6iv_qPvPkBIZ7v-o-8-QEhnuywFJva0aM6Y1lF4ZX5Pit3xaB4RDGZMnXWszrQrCliq&_nc_ohc=mr5bbffmxsoQ7kNvwEo8Hxx&_nc_oc=Adk1NG5UedknhgmoLVsVNNKPLW3HulJwKeHyw2JuT7Hta-vlmiceSvl1-QE3rxWhKySemQpdaKUFompCR06wMwNE&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=6Y2r-PGcvWjCsw5B7l7oAA&oh=00_AfhQzGa63CRb0GZxaz2hVNRLLPRU7v_qmdhcM3vrGHim5g&oe=692E3605"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -500,7 +457,7 @@ namespace Infrastructure.Data
                             Features = "Chuẩn bị trọn gói, sạch sẽ, gọn gàng, đảm bảo đúng nghi lễ truyền thống.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-6/484903604_1063987839086412_6313309244166366364_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFyD2mwg2IaPil7cA6i3Hh3IaUr41IwGY0hpSvjUjAZjam--U6hsMS8Px1dsowzpOJaa7U2tr6Jd-7R1e7AWrAs&_nc_ohc=5opu-WIIRZMQ7kNvwHtdc42&_nc_oc=AdkkbrHjKtnNIpW9fvjDrfsFeOaR4Dja4PqJ-deDmGjoc2y8-9jKOTslQDveF3F4tGk&_nc_zt=23&_nc_ht=scontent.fsgn2-6.fna&_nc_gid=M-zRJZK1GUGK81pZaKu7wg&oh=00_AfeYJ4UScMymvNJxFNWbol4qN3iTAEdOk_rr8OFq1XnoRg&oe=6908BE21"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/503979413_1125682359583626_6827542483558828841_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHLG7zOOTxpWps397ZqnexINqynRbtS-Es2rKdFu1L4SwBR8btuIXrp7iD4oMV5Vbkz6l9r03qq_3_c88LK720L&_nc_ohc=hMi10KyOn60Q7kNvwHBzHTa&_nc_oc=Adma1TfrEumW01N21FgiDcFvUy7fVoHY9Plp0e_sy6I7TJoyJRCFmDEeh09Xk-6XZ908s67D9QUCysvOhzH4gxpP&_nc_zt=23&_nc_ht=scontent.fsgn2-8.fna&_nc_gid=QOurflERDFN9QYQdSmmaDw&oh=00_AfiCu0MsIFsb6IqWKz_q5DZl10oAiJA35KweWjrl4LTp7A&oe=692E36C8"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
@@ -522,7 +479,7 @@ namespace Infrastructure.Data
                             Features = "Chuẩn bị trọn gói, sạch sẽ, gọn gàng, đảm bảo đúng nghi lễ truyền thống.",
                             Images = new List<ProductImage>{
                                 new ProductImage {
-                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-6/484878812_1063770679108128_5080873628317308610_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFPBml6yQxZCPYJTNOjiMh3s95r2fISJgCz3mvZ8hImAJXrlkWtiR1c15TzAzEKZ7LiLkUsJmcL66Ft70-VtR74&_nc_ohc=D7GcBQh4jk8Q7kNvwEfnKpr&_nc_oc=AdnNJxuGSH0LydkXvRMR9mii0nab-szSK-AhhQt2JHWu_ovkWe4Jg4-giZjKMLH5TwE&_nc_zt=23&_nc_ht=scontent.fsgn2-3.fna&_nc_gid=YmZ3AZ90BwvEFuW8pQrIQw&oh=00_AfcaF1GUZYYxz4CJT4kaQ7AaSY0z0RZi1OFuK7A5q0DU1g&oe=6908CEB9"),
+                                    ImageData = await DownloadImageAsync("https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-6/492440413_1089481926537003_7064616119984704817_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFROSUWiXGkStrUCpIDRXWmw0oyTM-Z3x_DSjJMz5nfH_f88_5mAJEg4owReIwBYVMx8QfWNG74QsP-FnnZss8w&_nc_ohc=AgA3T5wLPIwQ7kNvwFKmGjk&_nc_oc=AdkZJvH41QhJY0RsmWAyaFJlryMdF9vUzomG-7bbBLmWuQuBuUysX3KaOhFiQYvcbKZePKRi9COWLFPOZI311ycF&_nc_zt=23&_nc_ht=scontent.fsgn2-9.fna&_nc_gid=lopAxPZ-QlyLLgWANzlMbA&oh=00_AfjQ8DgLpDqguuI3k2SRNd6ZOmQptUJrluzJIGZVMDLrNw&oe=692E387E"),
                                     ImageMimeType = "image/jpeg"
                                 }
                             },
