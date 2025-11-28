@@ -66,9 +66,10 @@ builder.Services.AddCors(options =>
                 "http://localhost:8081",
                 "https://localhost:8081",  // Add HTTPS support
                 "http://localhost:3000",
-                "https://localhost:3000")  // Add HTTPS support)
+                "https://localhost:3000")  // Add HTTPS support
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();  // Allow credentials for authenticated requests
     });
 });
 
@@ -92,9 +93,6 @@ builder.Services.AddAuthentication(options =>
 });
 
 // === KẾT THÚC CẤU HÌNH AUTHENTICATION ===
-
-// Đăng ký TokenService (sẽ tạo ở bước 4)
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -137,41 +135,6 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Đã xảy ra lỗi khi khởi tạo dữ liệu.");
     }
 }
-
-if (app.Environment.IsDevelopment())
-{
-    var logger = app.Services.GetRequiredService<ILogger<Program>>();
-    var endpoints = app.Services.GetRequiredService<IActionDescriptorCollectionProvider>();
-
-    // Lấy URL https mà ứng dụng đang chạy
-    var launchUrl = app.Urls.FirstOrDefault(url => url.StartsWith("https://")) ?? "https://localhost:5001";
-
-    logger.LogInformation("==================================================");
-    logger.LogInformation("                    Endpoints                     ");
-    logger.LogInformation("==================================================");
-
-    foreach (var endpoint in endpoints.ActionDescriptors.Items.OfType<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>())
-    {
-        var controller = endpoint.ControllerName;
-        var action = endpoint.ActionName;
-        // Lấy template route từ attribute, ví dụ: "api/[controller]"
-        var routeTemplate = endpoint.AttributeRouteInfo?.Template;
-
-        if (routeTemplate != null)
-        {
-            var fullRoute = routeTemplate.Replace("[controller]", controller).Replace("[action]", action);
-            var httpMethods = string.Join(", ", endpoint.EndpointMetadata.OfType<HttpMethodMetadata>().SelectMany(m => m.HttpMethods));
-
-            if (!string.IsNullOrEmpty(httpMethods))
-            {
-                logger.LogInformation($"[{httpMethods}] {launchUrl}/{fullRoute}");
-            }
-        }
-    }
-    logger.LogInformation("==================================================");
-}
-// === KẾT THÚC KHỐI CODE ===
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
