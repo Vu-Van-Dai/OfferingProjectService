@@ -17,6 +17,7 @@ namespace Application.Dtos
         public bool IsHidden { get; set; }
         public int DisplayOrder { get; set; }
         public int ProductCount { get; set; }
+        public string? IconBase64 { get; set; }
     }
 
     // DTO nhận vào khi Admin bật/tắt Category

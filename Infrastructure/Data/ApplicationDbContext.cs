@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Infrastructure.Data
 {
@@ -29,13 +30,19 @@ namespace Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            var stringListComparer = new ValueComparer<List<string>>(
+                (c1, c2) => c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList());
+
             // Cấu hình để EF Core biết cách lưu danh sách Roles
             // Nó sẽ lưu dưới dạng một chuỗi duy nhất, phân tách bởi dấu phẩy
             modelBuilder.Entity<AppUser>()
                 .Property(e => e.Roles)
                 .HasConversion(
                     v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList());
+                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList())
+                .Metadata.SetValueComparer(stringListComparer);
             // Cấu hình AppUser 1-1 Shop
             modelBuilder.Entity<AppUser>()
                 .HasOne(u => u.Shop)
@@ -179,6 +186,25 @@ namespace Infrastructure.Data
             modelBuilder.Entity<ProductCategory>()
                 .Property(c => c.Description)
                 .HasColumnType("nvarchar(max)");
+            modelBuilder.Entity<ProductImage>(entity =>
+            {
+                entity.Property(e => e.ImageData).HasColumnType("varbinary(max)").IsRequired();
+                entity.Property(e => e.ImageMimeType).HasMaxLength(50).IsRequired();
+            });
+            modelBuilder.Entity<Shop>(entity =>
+            {
+                entity.Property(e => e.AvatarData).HasColumnType("varbinary(max)"); // Nullable
+            });
+
+            modelBuilder.Entity<AppUser>(entity =>
+            {
+                entity.Property(e => e.AvatarData).HasColumnType("varbinary(max)");
+            });
+
+            modelBuilder.Entity<ProductCategory>(entity =>
+            {
+                entity.Property(e => e.IconData).HasColumnType("varbinary(max)");
+            });
         }
     }
 }

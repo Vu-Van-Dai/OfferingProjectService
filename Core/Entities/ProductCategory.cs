@@ -21,7 +21,8 @@ namespace Core.Entities
         [MaxLength(250)]
         public string? BannerTitle { get; set; }
         public string? Description { get; set; }
-        public string? ImageUrl { get; set; } // Ảnh icon của danh mục
+        public byte[]? IconData { get; set; }
+        public string? IconMimeType { get; set; }
 
         // Mối quan hệ: Một danh mục có nhiều sản phẩm
         public ICollection<Product> Products { get; set; } = new List<Product>();

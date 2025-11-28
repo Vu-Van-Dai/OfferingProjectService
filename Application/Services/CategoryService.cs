@@ -12,10 +12,12 @@ namespace Application.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepo;
+        private readonly IImageService _imageService;
 
-        public CategoryService(ICategoryRepository categoryRepo)
+        public CategoryService(ICategoryRepository categoryRepo, IImageService imageService)
         {
             _categoryRepo = categoryRepo;
+            _imageService = imageService;
         }
 
         public async Task<IEnumerable<CategorySummaryDto>> GetAllSummariesAsync()
@@ -25,7 +27,7 @@ namespace Application.Services
             {
                 Id = c.Id,
                 Name = c.Name,
-                ImageUrl = c.ImageUrl, // Icon
+                ImageUrl = _imageService.ToBase64(c.IconData, c.IconMimeType), // Icon
                 ProductCount = c.Products.Count
             });
         }
@@ -42,7 +44,7 @@ namespace Application.Services
                 Name = category.Name,
                 BannerTitle = category.BannerTitle, // Trả về tiêu đề banner
                 Description = category.Description, // Trả về mô tả
-                ImageUrl = category.ImageUrl // Trả về icon
+                ImageUrl = _imageService.ToBase64(category.IconData, category.IconMimeType) // Trả về icon
             };
         }
     }

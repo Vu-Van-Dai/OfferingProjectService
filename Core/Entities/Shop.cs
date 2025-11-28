@@ -17,7 +17,9 @@ namespace Core.Entities
         [MaxLength(150)]
         public string Name { get; set; } = string.Empty; // Tên cửa hàng (Xôi Chè Cô Bốn)
         public string? Description { get; set; }
-        public string? ImageUrl { get; set; } // Avatar của shop
+        public byte[]? AvatarData { get; set; }
+        [MaxLength(50)]
+        public string? AvatarMimeType { get; set; }
         public DateTime JoinDate { get; set; } = DateTime.UtcNow;
         [MaxLength(20)]
         public string? ContactPhoneNumber { get; set; }

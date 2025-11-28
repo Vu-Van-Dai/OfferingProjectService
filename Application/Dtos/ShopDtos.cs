@@ -23,7 +23,7 @@ namespace Application.Dtos
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
-        public string? ImageUrl { get; set; }
+        public string? AvatarBase64 { get; set; } // Ảnh dạng Base64
         public string? ContactPhoneNumber { get; set; }
         public DateTime JoinDate { get; set; }
     }
@@ -33,7 +33,9 @@ namespace Application.Dtos
         public string Name { get; set; }
         public string? Description { get; set; }
         public string? ContactPhoneNumber { get; set; }
-        public IFormFile? ImageFile { get; set; }
-        public string? ExistingImageUrl { get; set; } // Dùng khi FE không gửi file mới
+        public IFormFile? AvatarFile { get; set; }
+
+        // Input cho đường dẫn ảnh (URL hoặc Base64 string) -> BỔ SUNG DÒNG NÀY
+        public string? AvatarUrl { get; set; }
     }
 }
