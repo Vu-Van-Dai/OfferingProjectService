@@ -126,9 +126,19 @@ namespace Application.Services
             // 1. Giữ lại ảnh cũ nếu ID có trong KeepImageIds
             var keepIds = dto.KeepImageIds ?? new List<int>();
             var imagesToRemove = product.Images.Where(i => !keepIds.Contains(i.Id)).ToList();
-            foreach (var img in imagesToRemove)
+            if (dto.KeepImageIds != null)
             {
-                product.Images.Remove(img); // EF sẽ tự delete do cascade
+                // Xóa những ảnh KHÔNG nằm trong danh sách giữ lại
+                var imagesToDelete = product.Images.Where(img => !dto.KeepImageIds.Contains(img.Id)).ToList();
+                foreach (var img in imagesToDelete)
+                {
+                    product.Images.Remove(img);
+                }
+            }
+            else
+            {
+                // Nếu không gửi danh sách giữ lại -> Xóa hết ảnh cũ (cẩn thận với logic này ở FE)
+                product.Images.Clear();
             }
 
             // 2. Thêm ảnh mới
@@ -138,6 +148,16 @@ namespace Application.Services
                 {
                     var (data, mime) = await _imageService.ProcessImageAsync(file);
                     product.Images.Add(new ProductImage { ImageData = data, ImageMimeType = mime });
+                }
+            }
+
+            if (dto.ImageUrls != null)
+            {
+                foreach (var str in dto.ImageUrls)
+                {
+                    var result = await _imageService.ProcessStringImageAsync(str);
+                    if (result != null)
+                        product.Images.Add(new ProductImage { ImageData = result.Value.Data, ImageMimeType = result.Value.MimeType });
                 }
             }
 
