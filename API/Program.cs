@@ -70,11 +70,7 @@ builder.Services.AddCors(options =>
                 "https://localhost:3000")  // Add HTTPS support
               .AllowAnyMethod()
               .AllowAnyHeader()
-<<<<<<< HEAD
-              .AllowCredentials();  // Allow credentials for authenticated requests
-=======
               .AllowCredentials();
->>>>>>> ca9be662b0d9ca1671783c684714ccc6d1cd0bb8
     });
 });
 
