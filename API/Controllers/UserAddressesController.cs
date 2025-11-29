@@ -46,7 +46,7 @@ namespace API.Controllers
         {
             var result = await _addressService.UpdateAddressAsync(GetUserId(), id, addressDto);
             if (!result) return NotFound();
-            return NoContent();
+            return Ok(new { message = "Cập nhật thành công", success = true });
         }
 
         // DELETE /api/useraddresses/{id} (Xóa địa chỉ)
@@ -55,7 +55,7 @@ namespace API.Controllers
         {
             var result = await _addressService.DeleteAddressAsync(GetUserId(), id);
             if (!result) return NotFound();
-            return NoContent();
+            return Ok(new { message = "Xóa thành công" });
         }
 
         // POST /api/useraddresses/{id}/set-default (Đặt làm mặc định)
